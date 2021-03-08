@@ -18,6 +18,7 @@ import DocListScreen from './screens/User/DocListScreen';
 import ProfileCardScreen from './screens/User/ProfileCardScreen';
 import FriendScreen from './screens/User/FriendScreen';
 import ChatScreen from './screens/User/ChatScreen';
+import NChat from './screens/User/NChat';
 
 import CounselorLoginScreen from './screens/Counselor/CounselorLoginScreen';
 import RegisterCounselorScreen from './screens/Counselor/RegisterCounselorScreen';
@@ -44,6 +45,7 @@ const UserStack = ({navigation}) => {
       <Stack.Screen name="Profile Card" component={ProfileCardScreen} />
       <Stack.Screen name="Friend Screen" component={FriendScreen} />
       <Stack.Screen name="Chat" component={ChatScreen} />
+      <Stack.Screen name="NChat" component={NChat} />
     </Stack.Navigator>
   );
 };

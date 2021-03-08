@@ -31,13 +31,6 @@ const slides = [
 ];
 
 export default class WelcomeScreen extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      showRealApp: false,
-    };
-  }
-
   _renderItem = ({item}) => {
     return (
       <View style={{flex: 1, backgroundColor: '#fff'}}>
@@ -75,25 +68,21 @@ export default class WelcomeScreen extends React.Component {
   };
 
   _onDone = () => {
-    this.setState({showRealApp: true});
+    this.props.navigation.navigate('Select User Screen');
   };
 
   render() {
-    if (this.state.showRealApp) {
-      return <SelectUserScreen />;
-    } else {
-      return (
-        <AppIntroSlider
-          renderItem={this._renderItem}
-          data={slides}
-          onDone={this._onDone}
-          keyExtractor={(item) => item.key.toString()}
-          activeDotStyle={{
-            backgroundColor: '#21465b',
-            width: 30,
-          }}
-        />
-      );
-    }
+    return (
+      <AppIntroSlider
+        renderItem={this._renderItem}
+        data={slides}
+        onDone={this._onDone}
+        keyExtractor={(item) => item.key.toString()}
+        activeDotStyle={{
+          backgroundColor: '#21465b',
+          width: 30,
+        }}
+      />
+    );
   }
 }

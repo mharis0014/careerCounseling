@@ -10,15 +10,15 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icone from 'react-native-vector-icons/Entypo';
 import {useSelector} from 'react-redux';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import DateTimePicker from 'react-native-modal-datetime-picker';
 
 const ProfileCardScreen = (props) => {
   const [isVisible, setVisible] = useState(false);
+  const [notBooked, booked] = useState('Book an Appointment');
+  const [btnColor, setBtnColor] = useState('#64e764');
 
   const usersOnline = useSelector((state) => state.usersOnline);
   const name1 = props.route.params.name;
-  const id1 = props.route.params.id;
-  const email1 = props.route.params.email;
   const img1 = props.route.params.imageData;
 
   const showPicker = () => {
@@ -30,8 +30,10 @@ const ProfileCardScreen = (props) => {
   };
 
   const handlePicker = (date) => {
-    console.warn('A date has been picked: ', date);
-    hideDatePicker();
+    // console.warn('A date has been picked: ', date);
+    hidePicker();
+    booked('Appointment Booked Successfully!');
+    setBtnColor('#aef2ae');
   };
 
   return (
@@ -120,14 +122,12 @@ const ProfileCardScreen = (props) => {
           <Text style={{fontWeight: 'bold', fontSize: 18}}>2.05K</Text>
         </View>
       </View>
-      <TouchableOpacity onPress={() => {}} style={styles.btn}>
-        onPress={showPicker}
+      <TouchableOpacity onPress={showPicker} style={[styles.btn, {backgroundColor: btnColor}]}>
         <Text style={{alignSelf: 'center', color: '#fff'}}>
-          Book an Appointment
+          {notBooked}
         </Text>
       </TouchableOpacity>
-
-      <DateTimePickerModal
+      <DateTimePicker
         isVisible={isVisible}
         mode="datetime"
         onConfirm={handlePicker}
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#eaeaea',
     borderRadius: 8,
-    backgroundColor: '#64e764',
+    // backgroundColor: ,
     padding: 14,
     marginHorizontal: 38,
   },

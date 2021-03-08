@@ -137,8 +137,8 @@ const App = ({navigation}) => {
         screenOptions={{
           headerShown: false,
         }}
-        initialRouteName="Select User Screen">
-        {/* <Stack.Screen name="Welcome Screen" component={WelcomeScreen} /> */}
+        initialRouteName="Welcome Screen">
+        <Stack.Screen name="Welcome Screen" component={WelcomeScreen} />
         <Stack.Screen name="Select User Screen" component={SelectUserScreen} />
         <Stack.Screen name="User Stack" component={UserStack} />
         <Stack.Screen name="Counselor Stack" component={CounselorStack} />

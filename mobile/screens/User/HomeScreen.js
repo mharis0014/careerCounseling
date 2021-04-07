@@ -8,9 +8,13 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import {useSelector} from 'react-redux';
 
 const HomeScreen = (props) => {
   const [email, setEmail] = useState('loading');
+  const usersonline = useSelector((state) => state.usersOnline);
+  const [onlineusers, setonlineusers] = useState(usersonline);
+  const [chatid, setchatid] = useState('1234');
 
   const boiler = async () => {
     const token = await AsyncStorage.getItem('token');
@@ -23,9 +27,36 @@ const HomeScreen = (props) => {
       .then((data) => {
         console.log(data);
         setEmail(data.email);
+        sendchatid();
       });
   };
-
+  const sendchatid = () => {
+    console.log('Reached chat id');
+    console.log(JSON.stringify(usersonline));
+    console.log(global.c_user);
+    const allusers = JSON.parse(JSON.stringify(usersonline));
+    console.log(allusers.length);
+    for (var i = 0; i < allusers.length; ++i) {
+      console.log('All users is ' + allusers[i].username);
+      console.log('Email is ' + global.c_user);
+      if (allusers[i].username.trim() === global.c_user.trim()) {
+        setchatid(allusers[i].userId);
+      }
+    }
+    console.log('Chat id is ' + chatid);
+    fetch('http://10.0.2.2:3000/updatechatid', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: global.c_user,
+        chatid: chatid,
+      }),
+    })
+      .then((res) => console.log(res.json()))
+      .then(async (data) => {});
+  };
   useEffect(() => {
     boiler();
   }, []);
@@ -51,7 +82,7 @@ const HomeScreen = (props) => {
         </Text>
         <Text>Choose a category which works best for you</Text>
         <TouchableOpacity
-          onPress={() => props.navigation.navigate('Doc List Screen')}
+          onPress={() => props.navigation.navigate('Paid User Stack')}
           style={[styles.customBtn, {backgroundColor: '#aef2ae'}]}>
           <View>
             <Text style={styles.btnHeading}>Career Counseling</Text>
@@ -67,6 +98,7 @@ const HomeScreen = (props) => {
           </View>
         </TouchableOpacity>
         <TouchableOpacity
+          onPress={() => props.navigation.navigate('Free User Stack')}
           style={[styles.customBtn, {backgroundColor: '#f8dae6'}]}>
           <View>
             <Text style={styles.btnHeading}>Free Advice Now</Text>

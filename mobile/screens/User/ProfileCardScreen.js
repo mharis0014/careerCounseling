@@ -1,12 +1,5 @@
 import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  FlatList,
-} from 'react-native';
+import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icone from 'react-native-vector-icons/Entypo';
 import {useSelector} from 'react-redux';
@@ -29,170 +22,111 @@ const ProfileCardScreen = (props) => {
     setVisible(false);
   };
 
-  const handlePicker = (date) => {
-    // console.warn('A date has been picked: ', date);
+  const handlePicker = () => {
+    props.navigation.navigate('Pricing Screen');
     hidePicker();
     booked('Appointment Booked Successfully!');
     setBtnColor('#aef2ae');
   };
 
-  if (name1 == 'ammar') {
-    return (
-      <View style={styles.container}>
-        <Image
-          style={{height: 260, width: '100%'}}
-          source={{
-            uri: `data:image/jpg;base64,${img1}`,
-          }}
-        />
-        <View style={styles.btnContainer}>
-          <View style={[styles.customBtn, {backgroundColor: '#eda1bf'}]}>
-            <Icon name="phone" size={16} color="#fff" />
-            <Text style={styles.btntxt}>Voice Call</Text>
-          </View>
-          <View style={[styles.customBtn, {backgroundColor: '#00BCD4'}]}>
-            <Icon name="video-camera" size={16} color="#fff" />
-            <Text style={styles.btntxt}>Video Call</Text>
-          </View>
-          <FlatList
-            data={usersOnline}
-            renderItem={({item}) => {
-              if (item.username != global.c_user) {
-                return (
-                  <View
-                    style={{
-                      flex: 1,
-                      alignItems: 'center',
-                      backgroundColor: '#f2f2f2',
-                      width: '100%',
-                      height: '100%',
-                    }}>
-                    <TouchableOpacity
-                      onPress={() =>
-                        props.navigation.navigate('Chat', {
-                          name: item.username,
-                          userId: item.userId,
-                        })
-                      }
-                      style={[styles.customBtn, {backgroundColor: '#fb9e93'}]}>
-                      <Icone name="new-message" size={16} color="#fff" />
-                      <Text style={styles.btntxt}>Message</Text>
-                    </TouchableOpacity>
-                  </View>
-                );
-              }
-            }}
-            keyExtractor={(item) => item.userId}
-          />
-        </View>
-        <View style={{marginLeft: 37, marginVertical: 5}}>
-          <Text style={{fontWeight: 'bold', paddingVertical: 5, fontSize: 16}}>
-            {name1}
-          </Text>
-          <Text style={{fontSize: 13}}> MBBS, FCPS</Text>
-          <Text style={{fontSize: 12, paddingVertical: 5}}>⭐ ⭐ ⭐ ⭐ ⭐</Text>
-        </View>
-        <View style={{marginHorizontal: 37}}>
-          <Text style={{fontWeight: 'bold', marginTop: 15, marginBottom: 5}}>
-            About Serena
-          </Text>
-          <Text style={{fontSize: 12, lineHeight: 20}}>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s.
-          </Text>
-        </View>
-        <View style={styles.review}>
-          <View>
-            <Text style={{fontSize: 11}}>Patients</Text>
-            <Text style={{fontWeight: 'bold', fontSize: 18}}>1.08K</Text>
-          </View>
-          <View>
-            <Text style={{fontSize: 11}}>Experience</Text>
-            <Text style={{fontWeight: 'bold', fontSize: 18}}>8 Years</Text>
-          </View>
-          <View>
-            <Text style={{fontSize: 11}}>Review</Text>
-            <Text style={{fontWeight: 'bold', fontSize: 18}}>2.05K</Text>
-          </View>
+  return (
+    <View style={styles.container}>
+      <Image
+        style={{height: 260, width: '100%'}}
+        source={{
+          uri: `data:image/jpg;base64,${img1}`,
+        }}
+      />
+      <View style={styles.btnContainer}>
+        <View style={[styles.customBtn, {backgroundColor: '#eda1bf'}]}>
+          <Icon name="phone" size={16} color="#fff" />
+          <Text style={styles.btntxt}>Voice Call</Text>
         </View>
         <TouchableOpacity
-          onPress={showPicker}
-          style={[styles.btn, {backgroundColor: btnColor}]}>
-          <Text style={{alignSelf: 'center', color: '#fff'}}>{notBooked}</Text>
-        </TouchableOpacity>
-        <DateTimePicker
-          isVisible={isVisible}
-          mode="datetime"
-          onConfirm={handlePicker}
-          onCancel={hidePicker}
-        />
-      </View>
-    );
-  } else {
-    return (
-      <View style={styles.container}>
-        <Image
-          style={{height: 260, width: '100%'}}
-          source={{
-            uri: `data:image/jpg;base64,${img1}`,
+          onPress={() => {
+            props.navigation.navigate('Video Chat Screen');
           }}
-        />
-        <View style={styles.btnContainer}>
-          <View style={[styles.customBtn, {backgroundColor: '#eda1bf'}]}>
-            <Icon name="phone" size={16} color="#fff" />
-            <Text style={styles.btntxt}>Voice Call</Text>
-          </View>
-          <View style={[styles.customBtn, {backgroundColor: '#00BCD4'}]}>
-            <Icon name="video-camera" size={16} color="#fff" />
-            <Text style={styles.btntxt}>Video Call</Text>
-          </View>
+          style={[styles.customBtn, {backgroundColor: '#00BCD4'}]}>
+          <Icon name="video-camera" size={16} color="#fff" />
+          <Text style={styles.btntxt}>Video Call</Text>
+        </TouchableOpacity>
+        <View
+          style={{
+            flex: 1,
+            alignItems: 'center',
+            backgroundColor: '#f2f2f2',
+            width: '100%',
+            height: '100%',
+          }}>
           <TouchableOpacity
-            onPress={() => props.navigation.navigate('NChat')}
+            onPress={() => {
+              const allusers = JSON.parse(JSON.stringify(usersOnline));
+              global.consolerchatid = '1234';
+              for (var i = 0; i < allusers.length; ++i) {
+                if (
+                  'c_' + name1.toLowerCase().trim() ===
+                  allusers[i].username.toLowerCase().trim()
+                ) {
+                  global.consolerchatid = allusers[i].userId;
+                }
+              }
+              console.log(global.consolerchatid);
+              props.navigation.navigate('Chat Screen', {
+                img: img1,
+                name: name1,
+                userId: global.consolerchatid,
+              });
+            }}
             style={[styles.customBtn, {backgroundColor: '#fb9e93'}]}>
             <Icone name="new-message" size={16} color="#fff" />
             <Text style={styles.btntxt}>Message</Text>
           </TouchableOpacity>
         </View>
-        <View style={{marginLeft: 37, marginVertical: 5}}>
-          <Text style={{fontWeight: 'bold', paddingVertical: 5, fontSize: 16}}>
-            {name1}
-          </Text>
-          <Text style={{fontSize: 13}}> MBBS, FCPS</Text>
-          <Text style={{fontSize: 12, paddingVertical: 5}}>⭐ ⭐ ⭐ ⭐ ⭐</Text>
-        </View>
-        <View style={{marginHorizontal: 37}}>
-          <Text style={{fontWeight: 'bold', marginTop: 15, marginBottom: 5}}>
-            About Serena
-          </Text>
-          <Text style={{fontSize: 12, lineHeight: 20}}>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s.
-          </Text>
-        </View>
-        <View style={styles.review}>
-          <View>
-            <Text style={{fontSize: 11}}>Patients</Text>
-            <Text style={{fontWeight: 'bold', fontSize: 18}}>1.08K</Text>
-          </View>
-          <View>
-            <Text style={{fontSize: 11}}>Experience</Text>
-            <Text style={{fontWeight: 'bold', fontSize: 18}}>8 Years</Text>
-          </View>
-          <View>
-            <Text style={{fontSize: 11}}>Review</Text>
-            <Text style={{fontWeight: 'bold', fontSize: 18}}>2.05K</Text>
-          </View>
-        </View>
-        <TouchableOpacity onPress={() => {}} style={styles.btn}>
-          <Text style={{alignSelf: 'center', color: '#fff'}}>
-            Book an Appointment
-          </Text>
-        </TouchableOpacity>
       </View>
-    );
-  }
+      <View style={{marginLeft: 37, marginVertical: 5}}>
+        <Text style={{fontWeight: 'bold', paddingVertical: 5, fontSize: 16}}>
+          {name1}
+        </Text>
+        <Text style={{fontSize: 13}}> MBBS, FCPS</Text>
+        <Text style={{fontSize: 12, paddingVertical: 5}}>⭐ ⭐ ⭐ ⭐ ⭐</Text>
+      </View>
+      <View style={{marginHorizontal: 37}}>
+        <Text style={{fontWeight: 'bold', marginTop: 15, marginBottom: 5}}>
+          About Serena
+        </Text>
+        <Text style={{fontSize: 12, lineHeight: 20}}>
+          Lorem Ipsum is simply dummy text of the printing and typesetting
+          industry. Lorem Ipsum has been the industry's standard dummy text ever
+          since the 1500s.
+        </Text>
+      </View>
+      <View style={styles.review}>
+        <View>
+          <Text style={{fontSize: 11}}>Patients</Text>
+          <Text style={{fontWeight: 'bold', fontSize: 18}}>1.08K</Text>
+        </View>
+        <View>
+          <Text style={{fontSize: 11}}>Experience</Text>
+          <Text style={{fontWeight: 'bold', fontSize: 18}}>8 Years</Text>
+        </View>
+        <View>
+          <Text style={{fontSize: 11}}>Review</Text>
+          <Text style={{fontWeight: 'bold', fontSize: 18}}>2.05K</Text>
+        </View>
+      </View>
+      <TouchableOpacity
+        onPress={showPicker}
+        style={[styles.btn, {backgroundColor: btnColor}]}>
+        <Text style={{alignSelf: 'center', color: '#fff'}}>{notBooked}</Text>
+      </TouchableOpacity>
+      <DateTimePicker
+        isVisible={isVisible}
+        mode="datetime"
+        onConfirm={handlePicker}
+        onCancel={hidePicker}
+      />
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({

@@ -1,7 +1,6 @@
 import React from 'react';
 import {View, Text, Image} from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
-import SelectUserScreen from './SelectUserScreen';
 
 const slides = [
   {
@@ -68,7 +67,7 @@ export default class WelcomeScreen extends React.Component {
   };
 
   _onDone = () => {
-    this.props.navigation.navigate('Select User Screen');
+    this.props.navigation.navigate('SelectUser Screen');
   };
 
   render() {

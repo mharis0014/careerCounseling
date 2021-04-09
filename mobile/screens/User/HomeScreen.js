@@ -59,6 +59,29 @@ const HomeScreen = (props) => {
   };
   useEffect(() => {
     boiler();
+    fetch('http://10.0.2.2:3000/savetoken', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        useremail: global.c_user,
+      }),
+    })
+      .then((resJson) => {
+        fetch('http://10.0.2.2:3000/getallusers_videoid')
+          .then((res) => res.json())
+          .then((resJson) => {
+            for (var i = 0; i < resJson.length; ++i) {
+              if (resJson[i].email == global.c_user) {
+                global.sessionid = '' + resJson[i].sessionId;
+                global.tokenid = '' + resJson[i].tokenid;
+              }
+            }
+          })
+          .catch((e) => console.log(e));
+      })
+      .then(async (data) => {});
   }, []);
 
   const logout = (props) => {

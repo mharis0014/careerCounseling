@@ -28,6 +28,7 @@
     "react-native-ionicons": "^4.6.5",
     "react-native-modal": "^11.7.0",
     "react-native-modal-datetime-picker": "^9.0.0",
+    "react-native-popup-dialog": "^0.18.3",
     "react-native-reanimated": "^1.13.1",
     "react-native-safe-area-context": "^3.1.8",
     "react-native-screens": "^2.14.0",
@@ -37,7 +38,8 @@
     "reanimated-bottom-sheet": "^1.0.0-alpha.22",
     "redux": "^4.0.5",
     "redux-socket.io": "^1.4.0",
-    "socket.io-client": "^3.0.4"
+    "socket.io-client": "^3.0.4",
+    "styled-components": "^5.2.3"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",

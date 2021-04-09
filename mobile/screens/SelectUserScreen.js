@@ -8,10 +8,10 @@ const selectUserScreen = ({navigation}) => {
         style={styles.container}
         onPress={() => navigation.navigate('User Stack')}>
         <Image
-          style={{height: 210, width: 210}}
+          style={{height: 210, width: 210, borderRadius: 110}}
           source={require('../assets/userIcon.png')}
         />
-        <Text>User</Text>
+        <Text style={{fontWeight: 'bold', fontSize: 16}}>User</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.container}
@@ -20,7 +20,7 @@ const selectUserScreen = ({navigation}) => {
           style={{height: 210, width: 210}}
           source={require('../assets/counselorIcon.png')}
         />
-        <Text>Counselor</Text>
+        <Text style={{fontWeight: 'bold', fontSize: 16}}>Counselor</Text>
       </TouchableOpacity>
     </>
   );

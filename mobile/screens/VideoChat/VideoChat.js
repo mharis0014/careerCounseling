@@ -33,8 +33,8 @@ class VideoChat extends Component {
   constructor(props) {
     super(props);
     this.apiKey = credentials.API_KEY;
-    this.sessionId = credentials.SESSION_ID;
-    this.token = credentials.TOKEN;
+    this.sessionId = global.sessionid;
+    this.token = global.tokenid;
     this.state = {
       subscriberIds: [], // Array for storing subscribers
       localPublishAudio: true, // Local Audio state

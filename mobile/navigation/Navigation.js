@@ -21,6 +21,7 @@ import PaymentOption from '../screens/User/PayOptScreen';
 import UserChat from '../screens/User/ChatScreen';
 
 import QuizScreen from '../screens/AI/QuizScreen';
+import Popup from '../components/Popup';
 
 import CounselorLogin from '../screens/Counselor/LoginScreen';
 import CounselorSignup from '../screens/Counselor/SignupScreen';
@@ -58,10 +59,11 @@ const UserStackPaid = () => {
       initialRouteName="Doc List Screen">
       <Stack.Screen name="Doc List Screen" component={DocList} />
       <Stack.Screen name="Profile Card" component={ProfileCard} />
+      <Stack.Screen name="Popup" component={Popup} />
       <Stack.Screen name="Pricing Screen" component={Pricing} />
       <Stack.Screen name="Payment Opt Screen" component={PaymentOption} />
       <Stack.Screen name="Chat Screen" component={UserChat} />
-      <Stack.Screen name="Video Chat Screen" component={VideoChat} />
+      <Stack.Screen name="Videochat" component={VideoChat} />
     </Stack.Navigator>
   );
 };

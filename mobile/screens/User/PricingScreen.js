@@ -10,14 +10,13 @@ const PricingScreen = (props) => {
           color="#4f9deb"
           title="Basic"
           price="$9.99"
-          onButtonPress={props.navigation.navigate('Payment Opt Screen')}
+          onButtonPress={() => props.navigation.navigate('Payment Opt Screen')}
           info={[
             'valid for 1 day',
             'Unlimited Text Chat',
             'anytime in working hours',
           ]}
           button={{title: 'GET STARTED'}}
-          //   button={{title: 'GET STARTED', icon: 'flight-takeoff'}}
         />
         <PricingCard
           color="#FF6161"

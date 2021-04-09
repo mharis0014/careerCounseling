@@ -1,16 +1,20 @@
 import React from 'react';
+import {View, Text, FlatList, StyleSheet} from 'react-native';
 import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  FlatList,
-  StyleSheet,
-} from 'react-native';
+  Container,
+  Card,
+  UserInfo,
+  UserImgWrapper,
+  UserImg,
+  UserInfoText,
+  UserName,
+  PostTime,
+  MessageText,
+  TextSection,
+} from '../../styles/InboxStyles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Icone from 'react-native-vector-icons/Entypo';
 import Iconm from 'react-native-vector-icons/MaterialIcons';
-import {Badge} from 'react-native-elements';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {useSelector} from 'react-redux';
 
@@ -71,84 +75,48 @@ const Notifications = (props) => {
 const Calls = (props) => {
   return <Text>Calls</Text>;
 };
-const Messages = (props) => {
+
+const Messages = (props, {navigation}) => {
   const usersOnline = useSelector((state) => state.usersOnline);
-
-  const renderSeparator = () => (
-    <View
-      style={{
-        marginBottom: -20,
-      }}
-    />
-  );
-
   return (
-    <View style={{flex: 1}}>
+    <Container>
       <FlatList
         data={usersOnline}
-        ItemSeparatorComponent={renderSeparator}
+        keyExtractor={(item) => item.userId}
         renderItem={({item}) => {
           return !item.username.toLowerCase().trim().startsWith('c_') ? (
-            <View
-              style={{
-                flex: 1,
-                alignItems: 'center',
-                backgroundColor: '#f2f2f2',
-                width: '100%',
-                height: '100%',
+            <Card
+              onPress={() => {
+                console.log('Reached here');
+                console.log(item.username.substring(2));
+                props.navigation.navigate('Chat Screen', {
+                  name: item.username.substring(2),
+                  userId: item.userId,
+                });
               }}>
-              <TouchableOpacity
-                onPress={() => {
-                  console.log('Reached here');
-                  props.navigation.navigate('Chat Screen', {
-                    name: item.username,
-                    userId: item.userId,
-                  });
-                }}
-                style={{
-                  width: '95%',
-                  height: 100,
-                  backgroundColor: '#fff',
-                  borderRadius: 5,
-                  elevation: 5,
-                  margin: 10,
-                }}>
-                <View style={{flexDirection: 'row'}}>
-                  <View style={{padding: 17}}>
-                    <Image
-                      style={{height: 60, width: 60, borderRadius: 30}}
-                      source={require('../../assets/logo_transparent.png')}
-                    />
-                  </View>
-                  <View style={{paddingTop: 20}}>
-                    <Text style={{fontSize: 20}}>{item.username}</Text>
-
-                    <Text
-                      style={{
-                        color: '#888',
-                        paddingTop: 10,
-                        fontWeight: 'bold',
-                      }}>
-                      Put the Fucking message here!
-                    </Text>
-                  </View>
-                  <View style={{paddingTop: 20, paddingLeft: 35}}>
-                    <Text style={{color: '#888'}}>7:12 PM</Text>
-                    <View
-                      style={{paddingTop: 17, paddingLeft: 22, fontSize: 15}}>
-                      <Badge value="1" status="error" />
-                    </View>
-                  </View>
-                </View>
-              </TouchableOpacity>
-            </View>
+              <UserInfo>
+                <UserImgWrapper>
+                  <UserImg
+                    source={require('../../assets/user.png')}
+                  />
+                </UserImgWrapper>
+                <TextSection>
+                  <UserInfoText>
+                    <UserName>{item.username.substring(2)}</UserName>
+                    <PostTime>2 hours ago</PostTime>
+                  </UserInfoText>
+                  <MessageText>
+                    Hey there, this is my test for chat App in react native!.
+                  </MessageText>
+                </TextSection>
+              </UserInfo>
+            </Card>
           ) : (
             <View />
           );
         }}
-        keyExtractor={(item) => item.userId}
       />
-    </View>
+    </Container>
   );
 };
 

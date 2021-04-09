@@ -1,18 +1,11 @@
 import React, {useState} from 'react';
-import {
-  Button,
-  View,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
+import {View, StyleSheet, Text, TouchableOpacity, Image} from 'react-native';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Icone from 'react-native-vector-icons/Entypo';
 import Iconm from 'react-native-vector-icons/MaterialIcons';
 function PayOptScreen() {
-  const [isModalVisible, setModalVisible] = useState(false);
+  const [isModalVisible, setModalVisible] = useState(true);
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -20,7 +13,6 @@ function PayOptScreen() {
 
   return (
     <View style={{flex: 1}}>
-      <Button title="Show modal" onPress={toggleModal} />
       <Modal isVisible={isModalVisible}>
         <View style={{flex: 1}}>
           <View style={styles.container}>

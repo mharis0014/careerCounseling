@@ -1,8 +1,10 @@
 import React from 'react';
 import {View, KeyboardAvoidingView, Platform} from 'react-native';
-import {GiftedChat} from 'react-native-gifted-chat';
+import {Bubble, GiftedChat, Send} from 'react-native-gifted-chat';
 import {useDispatch, useSelector} from 'react-redux';
 import {Header, Avatar} from 'react-native-elements';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const ChatScreen = (props) => {
   const dispatch = useDispatch();
@@ -16,11 +18,48 @@ const ChatScreen = (props) => {
       ? []
       : conversations[userId].messages;
 
+  const renderSend = (props) => {
+    return (
+      <Send {...props}>
+        <View>
+          <MaterialCommunityIcons
+            name="send-circle"
+            style={{marginBottom: 5, marginRight: 5}}
+            size={32}
+            color="#2e64e5"
+          />
+        </View>
+      </Send>
+    );
+  };
+
+  const renderBubble = (props) => {
+    return (
+      <Bubble
+        {...props}
+        wrapperStyle={{
+          right: {
+            backgroundColor: '#2e64e5',
+          },
+        }}
+        textStyle={{
+          right: {
+            color: '#fff',
+          },
+        }}
+      />
+    );
+  };
+
+  const scrollToBottomComponent = () => {
+    return <FontAwesome name="angle-double-down" size={22} color="#333" />;
+  };
+
   return (
     <>
       <View style={{flex: 1}}>
         <Header
-          backgroundColor="#fff"
+          backgroundColor="#FF6161"
           placement="left"
           leftComponent={
             <Avatar
@@ -33,9 +72,9 @@ const ChatScreen = (props) => {
           }
           centerComponent={{
             text: name,
-            style: {color: 'black', justifyContent: 'center'},
+            style: {color: 'black', paddingTop: 6},
           }}
-          rightComponent={{icon: 'call', color: 'black'}}
+          rightComponent={{icon: 'videocam', color: 'black'}}
         />
         <View style={{flex: 1}}>
           <GiftedChat
@@ -53,6 +92,11 @@ const ChatScreen = (props) => {
               });
             }}
             user={{_id: selfUser.userId}}
+            renderBubble={renderBubble}
+            alwaysShowSend
+            renderSend={renderSend}
+            scrollToBottom
+            scrollToBottomComponent={scrollToBottomComponent}
           />
           {Platform.OS === 'android' && (
             <KeyboardAvoidingView behavior="padding" />

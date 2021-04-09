@@ -5,7 +5,6 @@ var path = require('path');
 const app = express();
 const PORT = 3000;
 const { mongoUrl } = require("./keys");
-//const io = require("socket.io")();
 const { v1: uuid } = require("uuid");
 const messageHandler = require("./handlers/message.handler");
 
@@ -38,9 +37,6 @@ mongoose.connection.on("error", (err) => {
 });
 
 app.get("/", requireToken, (req, res) => {
-//  console.log(user_id)
- //res.send({ email: req.user.email });
- // res.send({ email: req.user.password });
 });
 
 const users = {};
@@ -91,25 +87,16 @@ io.on("connection", socket => {
   });
 });
 
-function createUserAvatarUrl() {
-  const rand1 = Math.round(Math.random() * 200 + 100);
-  const rand2 = Math.round(Math.random() * 200 + 100);
-  return `https://placeimg.com/${rand1}/${rand2}/any`;
-}
-
 function createUsersOnline() {
   const values = Object.values(users);
   const onlyWithUsernames = values.filter((u) => u.username !== undefined);
   return onlyWithUsernames;
 }
 
+function createUserAvatarUrl() {
+  const rand1 = Math.round(Math.random() * 200 + 100);
+  const rand2 = Math.round(Math.random() * 200 + 100);
+  return `https://placeimg.com/${rand1}/${rand2}/any`;
+}
 
-server.listen(3000);
-
-// app.listen(PORT, () => {
-//   console.log("server running " + PORT);
-//  // io.listen(3000);
-// });
-
- //io.listen(3000);
- 
+server.listen(PORT);

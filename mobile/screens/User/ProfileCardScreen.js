@@ -38,57 +38,71 @@ const ProfileCardScreen = (props) => {
         }}
       />
       <View style={styles.btnContainer}>
-        <View style={[styles.customBtn, {backgroundColor: '#eda1bf'}]}>
+        <TouchableOpacity onPress={() => props.navigation.navigate('Popup')}
+          style={[styles.customBtn, {backgroundColor: '#eda1bf'}]}>
           <Icon name="phone" size={16} color="#fff" />
           <Text style={styles.btntxt}>Voice Call</Text>
-        </View>
+        </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            props.navigation.navigate('Video Chat Screen');
+            console.log('Consoler type is ' + props.route.params.type);
+
+            if (props.route.params.type === 'counsoler') {
+              fetch('http://10.0.2.2:3000/getallusers_videoid')
+                .then((res) => res.json())
+                .then((resJson) => {
+                  console.log(
+                    'Get all users is ' + props.route.params.name.substr(2),
+                  );
+                  for (var i = 0; i < resJson.length; ++i) {
+                    if (resJson[i].email == props.route.params.name.substr(2)) {
+                      global.sessionid = '' + resJson[i].sessionId;
+                      global.tokenid = '' + resJson[i].tokenid;
+                    }
+                  }
+                  console.log('Session id is ' + global.sessionid);
+                  props.navigation.navigate('Videochat');
+                })
+                .catch((e) => console.log(e));
+            } else {
+              console.log('Session id is ' + global.sessionid);
+              props.navigation.navigate('Videochat');
+            }
           }}
           style={[styles.customBtn, {backgroundColor: '#00BCD4'}]}>
           <Icon name="video-camera" size={16} color="#fff" />
           <Text style={styles.btntxt}>Video Call</Text>
         </TouchableOpacity>
-        <View
-          style={{
-            flex: 1,
-            alignItems: 'center',
-            backgroundColor: '#f2f2f2',
-            width: '100%',
-            height: '100%',
-          }}>
-          <TouchableOpacity
-            onPress={() => {
-              const allusers = JSON.parse(JSON.stringify(usersOnline));
-              global.consolerchatid = '1234';
-              for (var i = 0; i < allusers.length; ++i) {
-                if (
-                  'c_' + name1.toLowerCase().trim() ===
-                  allusers[i].username.toLowerCase().trim()
-                ) {
-                  global.consolerchatid = allusers[i].userId;
-                }
+        <TouchableOpacity
+          onPress={() => {
+            const allusers = JSON.parse(JSON.stringify(usersOnline));
+            global.consolerchatid = '1234';
+            for (var i = 0; i < allusers.length; ++i) {
+              if (
+                'c_' + name1.toLowerCase().trim() ===
+                allusers[i].username.toLowerCase().trim()
+              ) {
+                global.consolerchatid = allusers[i].userId;
               }
-              console.log(global.consolerchatid);
-              props.navigation.navigate('Chat Screen', {
-                img: img1,
-                name: name1,
-                userId: global.consolerchatid,
-              });
-            }}
-            style={[styles.customBtn, {backgroundColor: '#fb9e93'}]}>
-            <Icone name="new-message" size={16} color="#fff" />
-            <Text style={styles.btntxt}>Message</Text>
-          </TouchableOpacity>
-        </View>
+            }
+            console.log(global.consolerchatid);
+            props.navigation.navigate('Chat Screen', {
+              img: img1,
+              name: name1,
+              userId: global.consolerchatid,
+            });
+          }}
+          style={[styles.customBtn, {backgroundColor: '#fb9e93'}]}>
+          <Icone name="new-message" size={16} color="#fff" />
+          <Text style={styles.btntxt}>Message</Text>
+        </TouchableOpacity>
       </View>
       <View style={{marginLeft: 37, marginVertical: 5}}>
         <Text style={{fontWeight: 'bold', paddingVertical: 5, fontSize: 16}}>
           {name1}
         </Text>
         <Text style={{fontSize: 13}}> MBBS, FCPS</Text>
-        <Text style={{fontSize: 12, paddingVertical: 5}}>⭐ ⭐ ⭐ ⭐ ⭐</Text>
+        <Text style={{fontSize: 13, paddingVertical: 5}}>⭐ ⭐ ⭐ ⭐ ⭐</Text>
       </View>
       <View style={{marginHorizontal: 37}}>
         <Text style={{fontWeight: 'bold', marginTop: 15, marginBottom: 5}}>

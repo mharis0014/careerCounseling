@@ -1,15 +1,16 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, KeyboardAvoidingView, Platform} from 'react-native';
 import {Bubble, GiftedChat, Send} from 'react-native-gifted-chat';
 import {useDispatch, useSelector} from 'react-redux';
 import {Header, Avatar} from 'react-native-elements';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
+import {Icon} from 'react-native-elements';
 const ChatScreen = (props) => {
   const dispatch = useDispatch();
   const selfUser = useSelector((state) => state.selfUser);
   var conversations = useSelector((state) => state.conversations);
+
   const userId = props.route.params.userId;
   const name = props.route.params.name;
   const img = props.route.params.img;
@@ -17,7 +18,10 @@ const ChatScreen = (props) => {
     conversations[userId].messages == undefined
       ? []
       : conversations[userId].messages;
-
+  if (messages_main.length != 0) {
+    var message_new = messages_main[messages_main.length - 1].text;
+    console.log('Last Message is ' + message_new);
+  }
   const renderSend = (props) => {
     return (
       <Send {...props}>
@@ -74,7 +78,31 @@ const ChatScreen = (props) => {
             text: name,
             style: {color: 'black', paddingTop: 6},
           }}
-          rightComponent={{icon: 'videocam', color: 'black'}}
+          rightComponent={
+            <Icon
+              style={{marginLeft: 15, color: '#fff'}}
+              name={'videocam'}
+              size={25}
+              color={'white'}
+              onPress={() => {
+                var message = {
+                  text: 'Video Chat Started',
+                  user: {_id: global.user_chatid2},
+                  createdAt: new Date('2021-05-12T08:15:39.869Z'),
+                  _id: userId,
+                };
+                dispatch({
+                  type: 'private_message',
+                  data: {message: message, conversationId: userId},
+                });
+                dispatch({
+                  type: 'server/private_message',
+                  data: {message: message, conversationId: userId},
+                });
+                props.navigation.navigate('Videochat');
+              }}
+            />
+          }
         />
         <View style={{flex: 1}}>
           <GiftedChat

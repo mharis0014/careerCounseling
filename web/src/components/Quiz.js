@@ -5,8 +5,9 @@ import Answers from "../data/answers";
 
 const Quiz = (props) => {
   const [q_no, setq_no] = useState(0);
-  const [visible, setVisible] = useState(true)
+  const [visible, setVisible] = useState(true);
   const [ansArray, setAnsArray] = useState([]);
+  const [comp, setComp] = useState([true]);
 
   const mcqSelect = (label) => {
     if (q_no + 1 >= 50) {
@@ -34,19 +35,19 @@ const Quiz = (props) => {
       </h4>
     </div>
   );
-  return visible ? (
+  return comp ? (
     <div
       style={{
         width: "63%",
-        height: "72%",
-        marginTop: 80,
+        height: "75%",
+        marginTop: 60,
         marginLeft: 300,
         paddingTop: "1%",
         flexDirection: "column",
         paddingLeft: "5%",
         paddingBottom: "2%",
         backgroundColor: "#f2f2f2",
-        border: '5px solid #bcb6d4',
+        border: "5px solid #bcb6d4",
         borderRadius: 50,
       }}
     >
@@ -76,6 +77,24 @@ const Quiz = (props) => {
               <Item label={item.label} name={item.name} option={item.option} />
             ))}
           </ul>
+          {visible ? null : (
+            <button
+              className="btn btn-default"
+              style={{
+                justifyContent: "center",
+                alignContent: "center",
+                width: "140px",
+                margin: "10px 10px 10px 700px",
+                paddingBottom: "40px",
+                backgroundColor: "#4dff4d",
+                color: "#fff",
+                fontWeight: "bold",
+              }}
+              onClick={() => setComp(false)}
+            >
+              Finish!
+            </button>
+          )}
         </div>
       </div>
     </div>

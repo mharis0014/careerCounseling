@@ -10,9 +10,12 @@
     "@testing-library/user-event": "^12.1.10",
     "bootstrap": "^5.0.0-alpha1",
     "react": "^17.0.1",
+    "react-confirm-alert": "^2.7.0",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
+    "react-simple-hook-modal": "^1.1.0",
+    "reactjs-popup": "^2.0.4",
     "web-vitals": "^1.0.1"
   },
   "scripts": {

@@ -8,6 +8,8 @@ import Counselors from "./Counselors";
 import Contact from "./Contact";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import Chat from "./components/Chat";
+import Quiz from "./components/Quiz";
 import SignIn from './SignIn';
 import SignUp from './SignUp';
 import { Route, Switch, Redirect } from "react-router";
@@ -23,6 +25,8 @@ const App = () => {
         <Route exact path="/contact" component={Contact} />
         <Route exact path="/signin" component={SignIn} />
         <Route exact path="/signup" component={SignUp} />
+        <Route exact path="/chat" component={Chat} />
+        <Route exact path="/quiz" component={Quiz} />
         <Redirect to="/" />
       </Switch>
       <Footer />

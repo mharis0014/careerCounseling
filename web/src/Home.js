@@ -9,6 +9,7 @@ const Home = () => {
         name="Your Career Is Your Life"
         imgsrc={web}
         visit="/counselors"
+        visit2="/quiz"
         btnname="Seek Advice Now"
         btnnametwo="Find Counselors"
       />

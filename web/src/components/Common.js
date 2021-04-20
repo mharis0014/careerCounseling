@@ -19,7 +19,7 @@ const Common = (props) => {
                     Scientifically plan your career with the help of Certified Career Counsellors & AI enabled technologies
                   </h2>
                   <div className="mt-3">
-                    <NavLink to="/home" className="btn-get-started ">
+                    <NavLink to={props.visit2} className="btn-get-started ">
                       {props.btnname}
                     </NavLink>
                     <NavLink to={props.visit} className="mx-3 btn-get-started ">

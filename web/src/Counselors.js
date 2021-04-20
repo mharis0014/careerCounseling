@@ -1,31 +1,21 @@
-import React, {useState , useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import Card from "./components/Card";
-import Sdata from "./data/Sdata";
 import "./index.css";
+import "./components/styles.css";
 
 const Service = () => {
+  const [arrayData, setArrayData] = useState([]);
 
-
-    const [arrayData, setArrayData] = useState([]);
-    const [loading, setLoading] = useState(true);
-
-    async function fetchData(){
-        
-    const response = await fetch('http://localhost:3001/getData');
+  async function fetchData() {
+    const response = await fetch("http://localhost:3001/getData");
     const data = await response.json();
     setArrayData(data);
-    setLoading(false);
     console.log(data);
-    console.log('i am here');
-    }
+  }
 
-   useEffect(() => {
+  useEffect(() => {
     fetchData();
-    
-    } ,[]);
-    
-    
-
+  }, []);
 
   return (
     <>
@@ -37,7 +27,13 @@ const Service = () => {
           <div className="col-10 mx-auto">
             <div className="row gy-4">
               {arrayData.map((val, ind) => {
-                return <Card key={ind} imgsrc={`data:image/jpeg;base64,${val.imageData}`} title={val.name} />;
+                return (
+                  <Card
+                    key={ind}
+                    imgsrc={`data:image/jpeg;base64,${val.imageData}`}
+                    title={val.name}
+                  />
+                );
               })}
             </div>
           </div>

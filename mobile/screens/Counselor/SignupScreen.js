@@ -4,28 +4,37 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  Dimensions,
   Image,
   ScrollView,
   TextInput,
+  TouchableWithoutFeedback,
+  Keyboard,
+  ToastAndroid,
+  Alert
 } from 'react-native';
 import {ActionSheet, Root} from 'native-base';
 import ImagePicker from 'react-native-image-crop-picker';
 import AsyncStorage from '@react-native-community/async-storage';
 
-const width = Dimensions.get('window').width;
+const nameRjx = /^[a-zA-z]+$/;
+const emailRjx = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+const medRjx = /^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})/;
+const strRjx = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/;
 
 export default class SignupScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fileList: require('../../assets/doc_pr.png'),
+      fileList: require('../../assets/doci.png'),
+      pic: require('../../assets/doci.png'),
       name: '',
       email: '',
       education: '',
       about: '',
       password: '',
-      pic: require('../../assets/doc_pr.png'),
+      nameErr: '',
+      emailErr: '',
+      passErr: '',
     };
   }
 
@@ -87,6 +96,50 @@ export default class SignupScreen extends Component {
     );
   };
 
+  nameValidator = () => {
+    console.log({name: this.state.name});
+    let nameValid = nameRjx.test(this.state.name);
+
+    if (this.state.name == '') {
+      this.setState({nameErr: 'name field cannot be empty'});
+    } else if (!nameValid) {
+      this.setState({nameErr: 'name must be alphabetic'});
+    } else {
+      this.setState({nameErr: ''});
+    }
+  };
+
+  emailValidator = () => {
+    let emailValid = emailRjx.test(this.state.email);
+    if (this.state.email == '') {
+      this.setState({emailErr: 'email field cannot be empty'});
+    } else if (!emailValid) {
+      this.setState({emailErr: 'You have entered an invalid email address'});
+    } else {
+      this.setState({emailErr: ''});
+    }
+  };
+
+  passValidator = () => {
+    let strong = strRjx.test(this.state.password);
+    let medium = medRjx.test(this.state.password);
+    if (this.state.password == '') {
+      this.setState('password field cannot be empty');
+    } else if (!medium) {
+      this.setState({
+        passErr:
+          'very weak password. your password must be a combination of capital letters(A-Z), alphabets(a-z) and numbers(0-9)',
+      });
+    } else if (!strong) {
+      this.setState({
+        passErr:
+          'medium strength. use special characters for a strong password',
+      });
+    } else {
+      passErr({passErr: ''});
+    }
+  };
+
   sendCred = async (props) => {
     fetch('http://10.0.2.2:3000/counselorSignup', {
       method: 'POST',
@@ -105,10 +158,22 @@ export default class SignupScreen extends Component {
       .then((res) => res.json())
       .then(async (data) => {
         try {
-          console.log(this.state.fileList.data);
-          console.log(data.token);
-          await AsyncStorage.setItem('token', data.token);
-          this.props.navigation.replace('Login Screen');
+          let nameValid = nameRjx.test(this.state.name);
+          let emailValid = emailRjx.test(this.state.email);
+          let medium = medRjx.test(this.state.password);
+          if (nameValid && emailValid && medium) {
+            console.log(this.state.fileList.data);
+            console.log(data.token);
+            await AsyncStorage.setItem('token', data.token);
+            this.props.navigation.replace('Login Screen');
+            ToastAndroid.show('Signed up successfully !', ToastAndroid.SHORT);
+          } else {
+            Alert.alert(
+              'Wrong credentials',
+              'You have entered the invalid credentials. Please follow the instructions!',
+              [{text: 'OK'}],
+            );
+          }
         } catch (e) {
           console.log('error on Register Counselor Screen line 114');
         }
@@ -116,69 +181,76 @@ export default class SignupScreen extends Component {
   };
 
   render() {
-    let {fileList} = this.state;
     let {pic} = this.state;
     return (
       <Root>
         <ScrollView>
-          <View style={styles.container}>
-            <TouchableOpacity
-              onPress={() => this.props.navigation.navigate('Login Screen')}
-              style={{alignSelf: 'flex-end'}}>
-              <Text style={{color: '#64e764', fontSize: 17, padding: 10}}>
-                Login
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={this.onClickAddImage}
-              style={{paddingTop: 10}}>
-              <Image
-                style={{height: 150, width: 150, borderRadius: 80}}
-                source={pic}
-              />
-            </TouchableOpacity>
-            <View style={styles.textInputContainer}>
-              <TextInput
-                placeholder="Name"
-                value={this.state.name}
-                onChangeText={(text) => this.setState({name: text})}
-                style={styles.textInput}
-              />
-              <TextInput
-                placeholder="Email"
-                value={this.state.email}
-                onChangeText={(text) => this.setState({email: text})}
-                style={styles.textInput}
-              />
-              <TextInput
-                placeholder="Education"
-                value={this.state.education}
-                onChangeText={(text) => this.setState({education: text})}
-                style={styles.textInput}
-              />
-              <TextInput
-                placeholder="About"
-                editable={true}
-                numberOfLines={4}
-                multiline={true}
-                maxLength={200}
-                value={this.state.about}
-                onChangeText={(text) => this.setState({about: text})}
-                style={styles.textInput}
-              />
-              <TextInput
-                placeholder="Password"
-                value={this.state.password}
-                onChangeText={(text) => this.setState({password: text})}
-                style={styles.textInput}
-              />
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style={styles.container}>
               <TouchableOpacity
-                onPress={(props) => this.sendCred(props)}
-                style={[styles.textInput, styles.btn]}>
-                <Text style={styles.btnTxt}>Sign Up</Text>
+                onPress={() => this.props.navigation.navigate('Login Screen')}
+                style={{alignSelf: 'flex-end'}}>
+                <Text style={{color: '#64e764', fontSize: 17, padding: 10}}>
+                  Login
+                </Text>
               </TouchableOpacity>
+              <TouchableOpacity
+                onPress={this.onClickAddImage}
+                style={{paddingTop: 10}}>
+                <Image
+                  style={{height: 150, width: 150, borderRadius: 80}}
+                  source={pic}
+                />
+              </TouchableOpacity>
+              <View style={styles.textInputContainer}>
+                <TextInput
+                  placeholder="Name"
+                  value={this.state.name}
+                  onBlur={() => this.nameValidator()}
+                  onChangeText={(text) => this.setState({name: text})}
+                  style={styles.textInput}
+                />
+                <Text style={styles.errTxt}>{this.state.nameErr}</Text>
+                <TextInput
+                  placeholder="Email"
+                  value={this.state.email}
+                  onBlur={() => this.emailValidator()}
+                  onChangeText={(text) => this.setState({email: text})}
+                  style={styles.textInput}
+                />
+                <Text style={styles.errTxt}>{this.state.emailErr}</Text>
+                <TextInput
+                  placeholder="Education"
+                  value={this.state.education}
+                  onChangeText={(text) => this.setState({education: text})}
+                  style={[styles.textInput, {marginBottom: 20}]}
+                />
+                <TextInput
+                  placeholder="About"
+                  editable={true}
+                  numberOfLines={4}
+                  multiline={true}
+                  maxLength={200}
+                  value={this.state.about}
+                  onChangeText={(text) => this.setState({about: text})}
+                  style={[styles.textInput, {marginBottom: 20}]}
+                />
+                <TextInput
+                  placeholder="Password"
+                  value={this.state.password}
+                  onBlur={() => this.passValidator()}
+                  onChangeText={(text) => this.setState({password: text})}
+                  style={styles.textInput}
+                />
+                <Text style={styles.errTxt}>{this.state.passErr}</Text>
+                <TouchableOpacity
+                  onPress={(props) => this.sendCred(props)}
+                  style={[styles.textInput, styles.btn]}>
+                  <Text style={styles.btnTxt}>Sign Up</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
+          </TouchableWithoutFeedback>
         </ScrollView>
       </Root>
     );
@@ -203,7 +275,6 @@ const styles = StyleSheet.create({
     borderColor: '#eaeaea',
     borderRadius: 6,
     padding: 13,
-    marginBottom: 20,
   },
   btn: {
     backgroundColor: '#64e764',
@@ -214,5 +285,9 @@ const styles = StyleSheet.create({
     color: '#fff',
     padding: 3,
     fontSize: 15,
+  },
+  errTxt: {
+    color: 'red',
+    fontStyle: 'italic',
   },
 });

@@ -43,7 +43,6 @@ class VideoChat extends Component {
       streamProperties: {}, // Handle individual stream properties,
       mainSubscriberStreamId: null,
     };
-
     this.sessionEventHandlers = {
       streamCreated: (event) => {
         const streamProperties = {
@@ -107,6 +106,11 @@ class VideoChat extends Component {
     this.publisherProperties = {
       cameraPosition: 'front',
     };
+  }
+  componentDidMount(): void {
+    if (this.props.route.params.value === 'audio') {
+      this.toggleVideo();
+    }
   }
 
   toggleAudio = () => {
@@ -364,7 +368,7 @@ class VideoChat extends Component {
   };
 
   render() {
-    return this.state.joinCall ? this.videoView() : this.joinVideoCall();
+    return this.videoView();
   }
 }
 

@@ -79,29 +79,54 @@ const ChatScreen = (props) => {
             style: {color: 'black', paddingTop: 6},
           }}
           rightComponent={
-            <Icon
-              style={{marginLeft: 15, color: '#fff'}}
-              name={'videocam'}
-              size={25}
-              color={'white'}
-              onPress={() => {
-                var message = {
-                  text: 'Video Chat Started',
-                  user: {_id: global.user_chatid2},
-                  createdAt: new Date('2021-05-12T08:15:39.869Z'),
-                  _id: userId,
-                };
-                dispatch({
-                  type: 'private_message',
-                  data: {message: message, conversationId: userId},
-                });
-                dispatch({
-                  type: 'server/private_message',
-                  data: {message: message, conversationId: userId},
-                });
-                props.navigation.navigate('Videochat');
-              }}
-            />
+            <>
+              <Icon
+                style={{marginLeft: 15, color: '#fff'}}
+                name={'videocam'}
+                size={25}
+                color={'white'}
+                onPress={() => {
+                  var message = {
+                    text: 'Video Chat Started',
+                    user: {_id: global.user_chatid2},
+                    createdAt: new Date('2021-05-12T08:15:39.869Z'),
+                    _id: userId,
+                  };
+                  dispatch({
+                    type: 'private_message',
+                    data: {message: message, conversationId: userId},
+                  });
+                  dispatch({
+                    type: 'server/private_message',
+                    data: {message: message, conversationId: userId},
+                  });
+                  props.navigation.navigate('Videochat', {value: 'video'});
+                }}
+              />
+              <Icon
+                style={{marginLeft: 15, color: '#fff'}}
+                name={'call'}
+                size={25}
+                color={'white'}
+                onPress={() => {
+                  var message = {
+                    text: 'Audio Chat Started',
+                    user: {_id: global.user_chatid2},
+                    createdAt: new Date('2021-05-12T08:15:39.869Z'),
+                    _id: userId,
+                  };
+                  dispatch({
+                    type: 'private_message',
+                    data: {message: message, conversationId: userId},
+                  });
+                  dispatch({
+                    type: 'server/private_message',
+                    data: {message: message, conversationId: userId},
+                  });
+                  props.navigation.navigate('Videochat', {value: 'audio'});
+                }}
+              />
+            </>
           }
         />
         <View style={{flex: 1}}>

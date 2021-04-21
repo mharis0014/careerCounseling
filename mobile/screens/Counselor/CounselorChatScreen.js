@@ -1,10 +1,19 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, Text, Image, TouchableOpacity, FlatList} from 'react-native';
 import {useSelector} from 'react-redux';
 
 const CounselorChatScreen = (props) => {
   const usersOnline = useSelector((state) => state.usersOnline);
-
+  useEffect(() => {
+    const allusers = JSON.parse(JSON.stringify(usersonline));
+    for (var i = 0; i < allusers.length; ++i) {
+      console.log('All users is ' + allusers[i].username);
+      console.log('Email is ' + global.curr_user);
+      if (allusers[i].username.trim() === global.curr_user.trim()) {
+        global.user_chatid2 = allusers[i].userId;
+      }
+    }
+  }, []);
   const renderSeparator = () => (
     <View
       style={{
@@ -53,7 +62,11 @@ const CounselorChatScreen = (props) => {
                   <View style={{paddingTop: 20}}>
                     <Text style={{fontSize: 15}}>{item.username}</Text>
                     <Text
-                      style={{color: '#888', paddingTop: 10, fontWeight: 'bold'}}>
+                      style={{
+                        color: '#888',
+                        paddingTop: 10,
+                        fontWeight: 'bold',
+                      }}>
                       hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
                     </Text>
                   </View>

@@ -1,11 +1,13 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, Image, Text, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Icone from 'react-native-vector-icons/Entypo';
 import Iconm from 'react-native-vector-icons/MaterialIcons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import {useSelector} from 'react-redux';
 
 const HomeScreen = (props) => {
+
   return (
     <View style={styles.container}>
       <TouchableOpacity

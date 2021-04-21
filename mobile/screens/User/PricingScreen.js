@@ -9,7 +9,7 @@ const PricingScreen = (props) => {
         <PricingCard
           color="#4f9deb"
           title="Basic"
-          price="$9.99"
+          price="$6.99"
           onButtonPress={() => props.navigation.navigate('Payment Opt Screen')}
           info={[
             'valid for 1 day',
@@ -21,7 +21,8 @@ const PricingScreen = (props) => {
         <PricingCard
           color="#FF6161"
           title="Standard"
-          price="$24.99"
+          price="$14.99"
+          onButtonPress={() => props.navigation.navigate('Payment Opt Screen')}
           info={[
             'valid for 1 hour',
             'Video Call',
@@ -34,7 +35,8 @@ const PricingScreen = (props) => {
         <PricingCard
           color="#99cc00"
           title="Premium"
-          price="$64.99"
+          price="$29.99"
+          onButtonPress={() => props.navigation.navigate('Payment Opt Screen')}
           info={[
             'valid for 7 days',
             'Video Call',

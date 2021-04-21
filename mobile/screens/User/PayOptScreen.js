@@ -2,9 +2,9 @@ import React, {useState} from 'react';
 import {View, StyleSheet, Text, TouchableOpacity, Image} from 'react-native';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/Ionicons';
-import Icone from 'react-native-vector-icons/Entypo';
 import Iconm from 'react-native-vector-icons/MaterialIcons';
-function PayOptScreen() {
+import Iconz from 'react-native-vector-icons/Zocial';
+function PayOptScreen(props) {
   const [isModalVisible, setModalVisible] = useState(true);
 
   const toggleModal = () => {
@@ -30,20 +30,26 @@ function PayOptScreen() {
             <Text style={{fontSize: 17, paddingTop: 5, paddingBottom: 30}}>
               Choose a Payment Method
             </Text>
-            <View style={[styles.card, {backgroundColor: '#99cc00'}]}>
+            <TouchableOpacity
+              onPress={() => props.navigation.navigate('ScanQR Screen')}
+              style={[styles.card, {backgroundColor: '#99cc00'}]}>
               <Iconm name="payment" size={38} color="#fff" />
               <View style={{paddingLeft: 10}}>
                 <Text style={styles.textBold}>EASYPAISA</Text>
-                <Text style={styles.textSmall}>Check Booked Appointments</Text>
+                <Text style={styles.textSmall}>
+                  Click to pay through Easypaisa
+                </Text>
               </View>
-            </View>
+            </TouchableOpacity>
             <TouchableOpacity
               style={[styles.card, {backgroundColor: '#3b7bbf'}]}
-              onPress={() => Navigation.navigation('pay')}>
-              <Icone name="paypal" size={38} color="#fff" />
+              onPress={() => porps.navigation.navigate('pay')}>
+              <Iconz name="stripe" size={38} color="#fff" />
               <View style={{paddingLeft: 10}}>
-                <Text style={styles.textBold}>PAYPAL</Text>
-                <Text style={styles.textSmall}>Check Your Notifications</Text>
+                <Text style={styles.textBold}>STRIPE</Text>
+                <Text style={styles.textSmall}>
+                  Click to pay through Stripe
+                </Text>
               </View>
             </TouchableOpacity>
           </View>

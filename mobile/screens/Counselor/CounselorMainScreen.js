@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   View,
   Text,
@@ -81,6 +81,7 @@ const Messages = (props) => {
       }}
     />
   );
+
 
   return (
     <View style={{flex: 1}}>

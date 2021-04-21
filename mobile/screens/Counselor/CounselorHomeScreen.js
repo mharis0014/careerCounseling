@@ -4,52 +4,52 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Icone from 'react-native-vector-icons/Entypo';
 import Iconm from 'react-native-vector-icons/MaterialIcons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {useDispatch, useSelector} from 'react-redux';
 
 const CounselorHomeScreen = (props) => {
-  const usersOnline = useSelector((state) => state.usersOnline);
-  
-//  const currentUser = props.route.params.user_name;
-  // console.log(`***********************${currentUser}`)
-  
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        onPress={() => props.navigation.navigate('Main Screen')}
-        style={{paddingTop: 10}}>
+      <View style={{paddingTop: 10}}>
         <Image
           style={{height: 280, width: 190}}
           source={require('../../assets/doc_icon.png')}
         />
-      </TouchableOpacity>
-      <View style={[styles.card, {backgroundColor: '#ffcc00'}]}>
+      </View>
+      <TouchableOpacity
+        onPress={() => props.navigation.navigate('Main Screen')}
+        style={[styles.card, {backgroundColor: '#ffcc00'}]}>
         <Icon name="md-calendar-outline" size={38} color="#fff" />
         <View style={{paddingLeft: 10}}>
           <Text style={styles.textBold}>APPOINTMENTS</Text>
           <Text style={styles.textSmall}>Check Booked Appointments</Text>
         </View>
-      </View>
-      <View style={[styles.card, {backgroundColor: '#FF6161'}]}>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => props.navigation.navigate('Main Screen')}
+        style={[styles.card, {backgroundColor: '#FF6161'}]}>
         <Icon name="notifications" size={38} color="#fff" />
         <View style={{paddingLeft: 10}}>
           <Text style={styles.textBold}>NOTIFICATIONS</Text>
           <Text style={styles.textSmall}>Check Your Notifications</Text>
         </View>
-      </View>
-      <View style={[styles.card, {backgroundColor: '#99cc00'}]}>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => props.navigation.navigate('Main Screen')}
+        style={[styles.card, {backgroundColor: '#99cc00'}]}>
         <Icone name="message" size={38} color="#fff" />
         <View style={{paddingLeft: 10}}>
           <Text style={styles.textBold}>CHAT</Text>
           <Text style={styles.textSmall}>Check Your new messages</Text>
         </View>
-      </View>
-      <View style={[styles.card, {backgroundColor: '#4d79ff'}]}>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => props.navigation.navigate('Main Screen')}
+        style={[styles.card, {backgroundColor: '#4d79ff'}]}>
         <Iconm name="call" size={38} color="#fff" />
         <View style={{paddingLeft: 10}}>
           <Text style={styles.textBold}>CALL</Text>
           <Text style={styles.textSmall}>Check your missed calls</Text>
         </View>
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };

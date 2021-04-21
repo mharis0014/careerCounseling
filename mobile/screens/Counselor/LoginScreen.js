@@ -6,6 +6,9 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
+  TouchableWithoutFeedback,
+  Keyboard,
+  ToastAndroid
 } from 'react-native';
 import {useDispatch} from 'react-redux';
 
@@ -33,6 +36,7 @@ const LoginScreen = (props) => {
           dispatch({type: 'server/join', data: 'c_' + email}); //Without Check else will not work
           global.curr_user = email;
           props.navigation.replace('Counselor Home Screen');
+          ToastAndroid.show('Logged in successfully !', ToastAndroid.SHORT);
         } catch (e) {
           console.log(e);
         }
@@ -40,51 +44,54 @@ const LoginScreen = (props) => {
   };
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity
-        onPress={() => {
-          props.navigation.replace('Signup');
-        }}
-        style={{alignSelf: 'flex-end'}}>
-        <Text style={{color: '#64e764', fontSize: 17, padding: 10}}>
-          Sign Up
-        </Text>
-      </TouchableOpacity>
-      <View style={{paddingTop: 10}}>
-        <Image
-          style={{height: 210, width: 210}}
-          source={require('../../assets/logo_transparent.png')}
-        />
-      </View>
-      <Text style={{fontSize: 17, padding: 5}}>Welcome Friends !!</Text>
-      <View style={styles.textInputContainer}>
-        <TextInput
-          placeholder="Email"
-          value={email}
-          onChangeText={(text) => setEmail(text)}
-          style={styles.textInput}
-        />
-        <TextInput
-          placeholder="Password"
-          secureTextEntry={true}
-          value={password}
-          onChangeText={(text) => setPassword(text)}
-          style={styles.textInput}
-        />
-        <Text style={{marginBottom: 25}}>Forgot Password ?</Text>
-        <View style={[styles.textInput, styles.btn]}>
-          <TouchableOpacity onPress={() => counselorCred(props)}>
-            <Text style={styles.btnTxt}>Login</Text>
-          </TouchableOpacity>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
+        <TouchableOpacity
+          onPress={() => {
+            props.navigation.replace('Signup Screen');
+          }}
+          style={{alignSelf: 'flex-end'}}>
+          <Text style={{color: '#64e764', fontSize: 17, padding: 10}}>
+            Sign Up
+          </Text>
+        </TouchableOpacity>
+        <View style={{paddingTop: 10}}>
+          <Image
+            style={{height: 210, width: 210}}
+            source={require('../../assets/logo_transparent.png')}
+          />
         </View>
-        <Text style={{alignSelf: 'center'}}>
-          Don't have Account ?{' '}
-          <TouchableOpacity onPress={() => props.navigation.replace('Signup')}>
-            <Text style={{color: '#64e764'}}>Sign Up</Text>
-          </TouchableOpacity>
-        </Text>
+        <Text style={{fontSize: 17, padding: 5}}>Welcome Friends !!</Text>
+        <View style={styles.textInputContainer}>
+          <TextInput
+            placeholder="Email"
+            value={email}
+            onChangeText={(text) => setEmail(text)}
+            style={styles.textInput}
+          />
+          <TextInput
+            placeholder="Password"
+            secureTextEntry={true}
+            value={password}
+            onChangeText={(text) => setPassword(text)}
+            style={styles.textInput}
+          />
+          <Text style={{marginBottom: 25}}>Forgot Password ?</Text>
+          <View style={[styles.textInput, styles.btn]}>
+            <TouchableOpacity onPress={() => counselorCred(props)}>
+              <Text style={styles.btnTxt}>Login</Text>
+            </TouchableOpacity>
+          </View>
+          <Text style={{alignSelf: 'center'}}>
+            Don't have Account ?{' '}
+            <TouchableOpacity
+              onPress={() => props.navigation.replace('Signup Screen')}>
+              <Text style={{color: '#64e764'}}>Sign Up</Text>
+            </TouchableOpacity>
+          </Text>
+        </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 

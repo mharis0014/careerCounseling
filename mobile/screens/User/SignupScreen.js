@@ -4,8 +4,12 @@ import {
   Text,
   Image,
   TextInput,
+  ToastAndroid,
   StyleSheet,
   TouchableOpacity,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Alert,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -13,6 +17,55 @@ const SignupScreen = (props) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [nameErr, setNameErr] = useState('');
+  const [emailErr, setEmailErr] = useState('');
+  const [passErr, setPassErr] = useState('');
+
+  let nameRjx = /^[a-zA-z]+$/;
+  let emailRjx = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+  let medRjx = /^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})/;
+  let strRjx = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/;
+
+  let nameValid = nameRjx.test(name);
+  let emailValid = emailRjx.test(email);
+  let strong = strRjx.test(password);
+  let medium = medRjx.test(password);
+
+  const nameValidator = () => {
+    if (name == '') {
+      setNameErr('name field cannot be empty');
+    } else if (!nameValid) {
+      setNameErr('name field must be alphabetic');
+    } else {
+      setNameErr('');
+    }
+  };
+
+  const emailValidator = () => {
+    if (email == '') {
+      setEmailErr('email field cannot be empty');
+    } else if (!emailValid) {
+      setEmailErr('You have entered an invalid email address');
+    } else {
+      setEmailErr('');
+    }
+  };
+
+  const passValidator = () => {
+    if (password == '') {
+      setPassErr('password field cannot be empty');
+    } else if (!medium) {
+      setPassErr(
+        'very weak password. your password must be a combination of capital letters(A-Z), alphabets(a-z) and numbers(0-9)',
+      );
+    } else if (!strong) {
+      setPassErr(
+        'medium strength. use special characters for a strong password',
+      );
+    } else {
+      setPassErr('');
+    }
+  };
 
   const sendCred = async (props) => {
     fetch('http://10.0.2.2:3000/userSignup', {
@@ -29,60 +82,75 @@ const SignupScreen = (props) => {
       .then((res) => res.json())
       .then(async (data) => {
         try {
-          console.log(data);
           console.log(data.token);
-          await AsyncStorage.setItem('token', data.token);
-          props.navigation.replace('User Login Screen');
+          if (nameValid && emailValid && medium) {
+            await AsyncStorage.setItem('token', data.token);
+            props.navigation.replace('User Login Screen');
+            ToastAndroid.show('Signed up successfully !', ToastAndroid.SHORT);
+          } else {
+            Alert.alert('Wrong credentials', 'You have entered the invalid credentials. Please follow the instructions!', [{text: 'OK'}]);
+          }
         } catch (e) {
-          console.log(email);
-          console.log(name);
-          console.log(password);
           console.log(e);
         }
       });
   };
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity
-        onPress={() => props.navigation.replace('User Login Screen')}
-        style={{alignSelf: 'flex-end'}}>
-        <Text style={{color: '#64e764', fontSize: 17, padding: 10}}>Login</Text>
-      </TouchableOpacity>
-      <View style={{paddingTop: 10}}>
-        <Image
-          style={{height: 210, width: 210}}
-          source={require('../../assets/logo_transparent.png')}
-        />
-      </View>
-      <Text style={{fontSize: 19, padding: 5}}>SignUp</Text>
-      <View style={styles.textInputContainer}>
-        <TextInput
-          placeholder="Name"
-          value={name}
-          onChangeText={(text) => setName(text)}
-          style={styles.textInput}
-        />
-        <TextInput
-          placeholder="Email"
-          value={email}
-          onChangeText={(text) => setEmail(text)}
-          style={styles.textInput}
-        />
-        <TextInput
-          placeholder="Password"
-          secureTextEntry={true}
-          value={password}
-          onChangeText={(text) => setPassword(text)}
-          style={styles.textInput}
-        />
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
         <TouchableOpacity
-          onPress={() => sendCred(props)}
-          style={[styles.textInput, styles.btn]}>
-          <Text style={styles.btnTxt}>Sign Up</Text>
+          onPress={() => props.navigation.replace('User Login Screen')}
+          style={{alignSelf: 'flex-end'}}>
+          <Text style={{color: '#64e764', fontSize: 17, padding: 10}}>
+            Login
+          </Text>
         </TouchableOpacity>
+        <View style={{paddingTop: 10}}>
+          <Image
+            style={{height: 210, width: 210}}
+            source={require('../../assets/logo_transparent.png')}
+          />
+        </View>
+        <Text style={{fontSize: 19, padding: 5}}>SignUp</Text>
+        <View style={styles.textInputContainer}>
+          <TextInput
+            placeholder="Name"
+            keyboardType="default"
+            value={name}
+            onBlur={() => nameValidator()}
+            onChangeText={(text) => setName(text)}
+            style={styles.textInput}
+          />
+          <Text style={styles.errTxt}>{nameErr}</Text>
+          <TextInput
+            placeholder="Email"
+            keyboardType="email-address"
+            value={email}
+            onBlur={() => emailValidator()}
+            onChangeText={(text) => setEmail(text)}
+            style={styles.textInput}
+          />
+          <Text style={styles.errTxt}>{emailErr}</Text>
+          <TextInput
+            placeholder="Password"
+            keyboardType="default"
+            maxLength={10}
+            secureTextEntry={true}
+            value={password}
+            onBlur={() => passValidator()}
+            onChangeText={(text) => setPassword(text)}
+            style={styles.textInput}
+          />
+          <Text style={styles.errTxt}>{passErr}</Text>
+          <TouchableOpacity
+            onPress={() => sendCred(props)}
+            style={[styles.textInput, styles.btn]}>
+            <Text style={styles.btnTxt}>Sign Up</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -104,7 +172,6 @@ const styles = StyleSheet.create({
     borderColor: '#eaeaea',
     borderRadius: 6,
     padding: 13,
-    marginBottom: 20,
   },
   btn: {
     backgroundColor: '#64e764',
@@ -115,6 +182,10 @@ const styles = StyleSheet.create({
     color: '#fff',
     padding: 3,
     fontSize: 15,
+  },
+  errTxt: {
+    color: 'red',
+    fontStyle: 'italic',
   },
 });
 

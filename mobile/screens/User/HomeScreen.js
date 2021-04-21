@@ -41,6 +41,7 @@ const HomeScreen = (props) => {
       console.log('Email is ' + global.c_user);
       if (allusers[i].username.trim() === global.c_user.trim()) {
         setchatid(allusers[i].userId);
+        global.user_chatid2 = allusers[i].userId;
       }
     }
     console.log('Chat id is ' + chatid);

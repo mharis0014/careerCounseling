@@ -42,28 +42,16 @@ const Sidebar = ({ sidebarOpen, closeSidebar }) => {
         </div>
         <div className="sidebar__link">
           <i className="fa fa-question"></i>
-          <a href="#">Payment Requests</a>
+          <a href="/payReq">Payment Requests</a>
         </div>
         <h2>LISTS</h2>
-        {/* <div className="sidebar__link">
-          <i className="fa fa-address-book"></i>
-          <a href="#">Users</a>
-        </div>
-        <div className="sidebar__link">
-          <i className="fa fa-user-md"></i>
-          <a href="#">Counselors</a>
-        </div>
-        <div className="sidebar__link">
-          <i className="fa fa-calendar"></i>
-          <a href="#">Appointments</a>
-        </div> */}
         <div className="sidebar__link">
           <i className="fa fa-credit-card"></i>
-          <a href="#">Payments</a>
+          <a href="/payments">Payments</a>
         </div>
         <div className="sidebar__link">
           <i className="fa fa-comment"></i>
-          <a href="#">Feedback</a>
+          <a href="/feedback">Feedback</a>
         </div>
         <div className="sidebar__logout">
           <i className="fa fa-power-off"></i>

@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "../adminStyles/AdminStyles.css";
 import { Link } from "react-router-dom";
-import Avatar from "../../assets/avatar.svg";
 
-const Appointments = () => {
+const Feedback = () => {
   const [arrayData, setArrData] = useState([]);
-  const [visible, setVisible] = useState(false);
-  const [dialogue, setDialogue] = useState(true);
 
   useEffect(() => {
     loadUsers();
@@ -28,30 +25,32 @@ const Appointments = () => {
     <main>
       <div className="main__container">
         <h1 style={{ paddingBottom: 15, color: "#343a40" }}>
-          Appointments
+          Reviews & Feedbacks
         </h1>
         <h3 style={{ paddingBottom: 40 }}>
           Dashboard <span style={{ paddingLeft: 10, paddingRight: 10 }}>/</span>
-          <span style={{ color: "#888" }}>Appointments</span>
+          <span style={{ color: "#888" }}>Feedback</span>
         </h3>
         <table class="table border shadow">
           <thead class="thead-dark">
             <tr>
               <th scope="col">#</th>
-              <th scope="col">User</th>
-              <th style={{ paddingRight: 10 }} scope="col">
-                {" "}
+              <th style={{ paddingRight: 100 }} scope="col">
+                Patient_Name
               </th>
               <th style={{ paddingRight: 100 }} scope="col">
-                Date/Time
+                Counselor_Name
               </th>
               <th style={{ paddingRight: 100 }} scope="col">
-                Session/Type
+                Reviews
               </th>
-              <th style={{ paddingRight: 250 }} scope="col">
-                Counselor
+              <th style={{ paddingRight: 300 }} scope="col">
+                Feedbacks
               </th>
-              <th style={{ paddingRight: 200 }}>Action</th>
+              <th style={{ paddingRight: 100 }} scope="col">
+                Date
+              </th>
+              <th style={{ paddingRight: 100 }}>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -59,27 +58,54 @@ const Appointments = () => {
               <tr>
                 <th scope="row">{index + 1}</th>
                 <td>
-                  <img
-                    src={`data:image/jpeg;base64,${user.imageData}`}
-                    height="60"
-                    style={{ borderRadius: "50%" }}
-                    width="60"
-                  />
+                  <div className="row">
+                    <img
+                      src={`data:image/jpeg;base64,${user.imageData}`}
+                      height="60"
+                      style={{ borderRadius: "50%", paddingRight: 15 }}
+                      width="60"
+                    />
+                    <div>
+                      <p>{user.name}</p>
+                      <p
+                        style={{
+                          fontStyle: "italic",
+                          textDecorationLine: "underline",
+                          color: "blue",
+                        }}
+                      >
+                        {user.email}
+                      </p>
+                    </div>
+                  </div>
                 </td>
                 <td>
-                  <div>
-                    <p>{user.name}</p>
-                    <p style={{ color: "#888" }}>#{user.id}</p>
-                    <p
-                      style={{
-                        fontStyle: "italic",
-                        textDecorationLine: "underline",
-                        color: "blue",
-                      }}
-                    >
-                      {user.email}
-                    </p>
+                  <div className="row">
+                    <img
+                      src={`data:image/jpeg;base64,${user.imageData}`}
+                      height="60"
+                      style={{ borderRadius: "50%", paddingRight: 15 }}
+                      width="60"
+                    />
+                    <div>
+                      <p>{user.name}</p>
+                      <p
+                        style={{
+                          fontStyle: "italic",
+                          textDecorationLine: "underline",
+                          color: "blue",
+                        }}
+                      >
+                        {user.email}
+                      </p>
+                    </div>
                   </div>
+                </td>
+                <td>⭐⭐⭐⭐⭐</td>
+                <td>
+                  Lorem Ipsum is simply dummy text of the printing and
+                  typesetting industry. Lorem Ipsum has been the industry's
+                  standard dummy text ever since the 1500s.
                 </td>
                 <td>
                   <div>
@@ -93,50 +119,19 @@ const Appointments = () => {
                     </p>
                   </div>
                 </td>
-                <td>Basic/Standard/Prime</td>
-                <td>
-                  <div className="row">
-                    <img
-                      src={Avatar}
-                      height="60"
-                      style={{ borderRadius: "50%", paddingRight: 15 }}
-                      width="60"
-                    />
-                    <div>
-                      <p>{user.name}</p>
-                      <p style={{ color: "#888" }}>#{user.id}</p>
-                      <p
-                        style={{
-                          fontStyle: "italic",
-                          textDecorationLine: "underline",
-                          color: "blue",
-                        }}
-                      >
-                        {user.email}
-                      </p>
-                    </div>
-                  </div>
-                </td>
-
                 <td>
                   <Link
                     style={{ textDecoration: "none" }}
                     class="btn btn-primary mr-2"
-                    onClick={() => setVisible(!visible)}
                   >
-                    View
-                  </Link>
-                  <Link
-                    style={{ textDecoration: "none" }}
-                    class="btn btn-outline-primary mr-2"
-                  >
-                    Edit
+                    <i className="fa fa-reply"></i>
                   </Link>
                   <Link
                     style={{ textDecoration: "none" }}
                     class="btn btn-danger"
+                    onClick={() => {}}
                   >
-                    Delete
+                    <i className="fa fa-trash"></i>
                   </Link>
                 </td>
               </tr>
@@ -148,4 +143,4 @@ const Appointments = () => {
   );
 };
 
-export default Appointments;
+export default Feedback;

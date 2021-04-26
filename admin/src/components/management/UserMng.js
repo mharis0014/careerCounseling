@@ -24,6 +24,13 @@ const UserMng = () => {
   return (
     <main>
       <div className="main__container">
+        <h1 style={{ paddingBottom: 15, color: "#343a40" }}>
+          User Management
+        </h1>
+        <h3 style={{ paddingBottom: 40 }}>
+          Dashboard <span style={{ paddingLeft: 10, paddingRight: 10 }}>/</span>
+          <span style={{ color: "#888" }}>Users</span>
+        </h3>
         <table class="table border shadow">
           <thead class="thead-dark">
             <tr>

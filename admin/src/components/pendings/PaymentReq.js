@@ -3,10 +3,8 @@ import "../adminStyles/AdminStyles.css";
 import { Link } from "react-router-dom";
 import Avatar from "../../assets/avatar.svg";
 
-const Appointments = () => {
+const PaymentReq = (props) => {
   const [arrayData, setArrData] = useState([]);
-  const [visible, setVisible] = useState(false);
-  const [dialogue, setDialogue] = useState(true);
 
   useEffect(() => {
     loadUsers();
@@ -28,72 +26,39 @@ const Appointments = () => {
     <main>
       <div className="main__container">
         <h1 style={{ paddingBottom: 15, color: "#343a40" }}>
-          Appointments
+          Pending Payments
         </h1>
         <h3 style={{ paddingBottom: 40 }}>
           Dashboard <span style={{ paddingLeft: 10, paddingRight: 10 }}>/</span>
-          <span style={{ color: "#888" }}>Appointments</span>
+          <span style={{ color: "#888" }}>Payment Requests</span>
         </h3>
         <table class="table border shadow">
           <thead class="thead-dark">
             <tr>
               <th scope="col">#</th>
-              <th scope="col">User</th>
-              <th style={{ paddingRight: 10 }} scope="col">
-                {" "}
+              <th style={{ paddingRight: 80 }} scope="col">
+                Invoice_No
+              </th>
+              <th style={{ paddingRight: 300 }} scope="col">
+                Doctor
+              </th>
+              <th style={{ paddingRight: 140 }} scope="col">
+                Amount
+              </th>
+              <th style={{ paddingRight: 140 }} scope="col">
+                Paid_On
               </th>
               <th style={{ paddingRight: 100 }} scope="col">
-                Date/Time
+                Status
               </th>
-              <th style={{ paddingRight: 100 }} scope="col">
-                Session/Type
-              </th>
-              <th style={{ paddingRight: 250 }} scope="col">
-                Counselor
-              </th>
-              <th style={{ paddingRight: 200 }}>Action</th>
+              <th style={{ paddingRight: 150 }}>Action</th>
             </tr>
           </thead>
           <tbody>
             {arrayData.map((user, index) => (
               <tr>
                 <th scope="row">{index + 1}</th>
-                <td>
-                  <img
-                    src={`data:image/jpeg;base64,${user.imageData}`}
-                    height="60"
-                    style={{ borderRadius: "50%" }}
-                    width="60"
-                  />
-                </td>
-                <td>
-                  <div>
-                    <p>{user.name}</p>
-                    <p style={{ color: "#888" }}>#{user.id}</p>
-                    <p
-                      style={{
-                        fontStyle: "italic",
-                        textDecorationLine: "underline",
-                        color: "blue",
-                      }}
-                    >
-                      {user.email}
-                    </p>
-                  </div>
-                </td>
-                <td>
-                  <div>
-                    <p>11 Nov 2019</p>
-                    <p
-                      style={{
-                        color: "blue",
-                      }}
-                    >
-                      10.00 AM
-                    </p>
-                  </div>
-                </td>
-                <td>Basic/Standard/Prime</td>
+                <td>#INV-00{index + 1}</td>
                 <td>
                   <div className="row">
                     <img
@@ -117,26 +82,30 @@ const Appointments = () => {
                     </div>
                   </div>
                 </td>
-
+                <td>$160</td>
+                <td>11 Apr 2019</td>
+                <td>Success</td>
                 <td>
                   <Link
                     style={{ textDecoration: "none" }}
                     class="btn btn-primary mr-2"
-                    onClick={() => setVisible(!visible)}
                   >
-                    View
+                    <i className="fa fa-edit" aria-hidden="true"></i>
                   </Link>
                   <Link
-                    style={{ textDecoration: "none" }}
-                    class="btn btn-outline-primary mr-2"
+                    style={{
+                      textDecoration: "none",
+                      backgroundColor: "#20e354",
+                    }}
+                    class="btn btn-primary mr-2"
                   >
-                    Edit
+                    <i className="fa fa-check" aria-hidden="true"></i>
                   </Link>
                   <Link
                     style={{ textDecoration: "none" }}
                     class="btn btn-danger"
                   >
-                    Delete
+                    <i className="fa fa-trash" aria-hidden="true"></i>
                   </Link>
                 </td>
               </tr>
@@ -148,4 +117,4 @@ const Appointments = () => {
   );
 };
 
-export default Appointments;
+export default PaymentReq;

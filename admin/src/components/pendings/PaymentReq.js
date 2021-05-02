@@ -12,7 +12,7 @@ const PaymentReq = (props) => {
 
   async function loadUsers() {
     try {
-      const response = await fetch("http://localhost:3001/getData");
+      const response = await fetch("http://localhost:3001/getCounselorData");
       const data = await response.json();
       setArrData(data);
 
@@ -35,20 +35,20 @@ const PaymentReq = (props) => {
         <table class="table border shadow">
           <thead class="thead-dark">
             <tr>
-              <th scope="col">#</th>
-              <th style={{ paddingRight: 80 }} scope="col">
-                Invoice_No
+              <th scope="col">Invoice_No</th>
+              <th style={{ paddingRight: 230 }} scope="col">
+                User
               </th>
-              <th style={{ paddingRight: 300 }} scope="col">
-                Doctor
+              <th style={{ paddingRight: 250 }} scope="col">
+                Counselor
               </th>
-              <th style={{ paddingRight: 140 }} scope="col">
+              <th style={{ paddingRight: 50 }} scope="col">
                 Amount
               </th>
-              <th style={{ paddingRight: 140 }} scope="col">
+              <th style={{ paddingRight: 90 }} scope="col">
                 Paid_On
               </th>
-              <th style={{ paddingRight: 100 }} scope="col">
+              <th style={{ paddingRight: 80 }} scope="col">
                 Status
               </th>
               <th style={{ paddingRight: 150 }}>Action</th>
@@ -57,8 +57,22 @@ const PaymentReq = (props) => {
           <tbody>
             {arrayData.map((user, index) => (
               <tr>
-                <th scope="row">{index + 1}</th>
-                <td>#INV-00{index + 1}</td>
+                <th scope="row">#INV-00{index + 1}</th>
+                <td>
+                  <div>
+                    <p>{user.name}</p>
+                    <p style={{ color: "#888" }}>#{user.id}</p>
+                    <p
+                      style={{
+                        fontStyle: "italic",
+                        textDecorationLine: "underline",
+                        color: "blue",
+                      }}
+                    >
+                      {user.email}
+                    </p>
+                  </div>
+                </td>
                 <td>
                   <div className="row">
                     <img

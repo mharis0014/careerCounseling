@@ -6,10 +6,12 @@ import Chart from "../charts/Chart";
 const Main = () => {
   const [userData, setUserData] = useState([]);
   const [counselorData, setCounselorData] = useState([]);
+    const [appointmentData, setAppointmentData] = useState([]);
 
   useEffect(() => {
     loadUsers();
     loadCounselors();
+    loadAppointments();
   }, []);
 
   async function loadUsers() {
@@ -24,17 +26,28 @@ const Main = () => {
     }
   }
 
-    async function loadCounselors() {
-      try {
-        const response = await fetch("http://localhost:3001/getData");
-        const data = await response.json();
-        setCounselorData(data);
+  async function loadCounselors() {
+    try {
+      const response = await fetch("http://localhost:3001/getCounselorData");
+      const data = await response.json();
+      setCounselorData(data);
 
-        console.log(data);
+      console.log(data);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+    async function loadAppointments() {
+      try {
+        const response = await fetch("http://localhost:3001/getAppointments");
+        const data = await response.json();
+        setAppointmentData(data);
       } catch (e) {
         console.log(e);
       }
     }
+
   return (
     <main>
       <div className="main__container">
@@ -60,7 +73,9 @@ const Main = () => {
             <i className="fa fa-calendar fa-2x text-red" aria-hidden="true"></i>
             <div className="card_inner">
               <p className="text-primary-p">Total Appoinemts</p>
-              <span className="font-bold text-title">2467</span>
+              <span className="font-bold text-title">
+                {appointmentData.length}
+              </span>
             </div>
           </div>
           <div className="card">
@@ -70,7 +85,9 @@ const Main = () => {
             ></i>
             <div className="card_inner">
               <p className="text-primary-p">Number of Counselors</p>
-              <span className="font-bold text-title">{counselorData.length}</span>
+              <span className="font-bold text-title">
+                {counselorData.length}
+              </span>
             </div>
           </div>
           <div className="card">

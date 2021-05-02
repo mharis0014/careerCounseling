@@ -6,27 +6,43 @@ const CounselorMng = () => {
   const [arrayData, setArrData] = useState([]);
 
   useEffect(() => {
-    loadUsers();
+    loadCounselors();
   }, []);
 
-  async function loadUsers() {
+  async function loadCounselors() {
     try {
-      const response = await fetch("http://localhost:3001/getData");
+      const response = await fetch("http://localhost:3001/getCounselorData");
       const data = await response.json();
       setArrData(data);
-
-      console.log(data);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+  async function deleteCounselor(id) {
+    try {
+      const response = await fetch(
+        "http://localhost:3001/deleteCounselor"+id,
+        {
+          method: "DELETE",
+        }
+      );
+      const resp = await response.json();
+      console.log(resp);
     } catch (e) {
       console.log(e);
     }
   }
 
+  const handleDelete = (e) => {
+    const id = e.target.value;
+    deleteCounselor(id);
+    loadCounselors();
+  };
+
   return (
     <main>
       <div className="main__container">
-        <h1 style={{ paddingBottom: 15, color: "#343a40" }}>
-          Counselors Management
-        </h1>
+        <h1 style={{ paddingBottom: 15, color: "#343a40" }}>Counselor Management</h1>
         <h3 style={{ paddingBottom: 40 }}>
           Dashboard <span style={{ paddingLeft: 10, paddingRight: 10 }}>/</span>
           <span style={{ color: "#888" }}>Counselors</span>
@@ -54,20 +70,20 @@ const CounselorMng = () => {
             </tr>
           </thead>
           <tbody>
-            {arrayData.map((user, index) => (
+            {arrayData.map((counselor, index) => (
               <tr>
                 <th scope="row">{index + 1}</th>
                 <td>
                   <img
-                    src={`data:image/jpeg;base64,${user.imageData}`}
+                    src={`data:image/jpeg;base64,${counselor.imageData}`}
                     height="50"
                     style={{ borderRadius: "50%" }}
                     width="50"
                   />
                 </td>
-                <td>{user.name}</td>
-                <td>{user.email}</td>
-                <td>{user.education}</td>
+                <td>{counselor.name}</td>
+                <td>{counselor.email}</td>
+                <td>{counselor.education}</td>
                 <td>⭐⭐⭐⭐⭐</td>
                 <td>
                   <Link
@@ -85,9 +101,19 @@ const CounselorMng = () => {
                   <Link
                     style={{ textDecoration: "none" }}
                     class="btn btn-danger"
-                    onClick={() => {}}
                   >
-                    Delete
+                    <button
+                      style={{
+                        backgroundColor: "transparent",
+                        border: 0,
+                        color: "#fff",
+                        fontSize: 15,
+                      }}
+                      value={counselor.id}
+                      onClick={handleDelete}
+                    >
+                      Delete
+                    </button>
                   </Link>
                 </td>
               </tr>

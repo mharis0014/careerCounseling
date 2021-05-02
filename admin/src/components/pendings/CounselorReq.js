@@ -11,7 +11,7 @@ const CounselorReq = () => {
 
   async function loadUsers() {
     try {
-      const response = await fetch("http://localhost:3001/getData");
+      const response = await fetch("http://localhost:3001/getCounselorData");
       const data = await response.json();
       setArrData(data);
 
@@ -57,20 +57,20 @@ const CounselorReq = () => {
             </tr>
           </thead>
           <tbody>
-            {arrayData.map((user, index) => (
+            {arrayData.map((counselor, index) => (
               <tr>
                 <th scope="row">{index + 1}</th>
                 <td>
                   <img
-                    src={`data:image/jpeg;base64,${user.imageData}`}
+                    src={`data:image/jpeg;base64,${counselor.imageData}`}
                     height="50"
                     style={{ borderRadius: "50%" }}
                     width="50"
                   />
                 </td>
-                <td>{user.name}</td>
-                <td>{user.email}</td>
-                <td>{user.education}</td>
+                <td>{counselor.name}</td>
+                <td>{counselor.email}</td>
+                <td>{counselor.education}</td>
                 <td>
                   Lorem Ipsum is simply dummy text of the printing and
                   typesetting industry. Lorem Ipsum has been the industry's

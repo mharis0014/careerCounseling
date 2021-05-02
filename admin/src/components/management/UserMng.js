@@ -14,19 +14,33 @@ const UserMng = () => {
       const response = await fetch("http://localhost:3001/getUserData");
       const data = await response.json();
       setArrData(data);
-
-      console.log(data);
     } catch (e) {
       console.log(e);
     }
   }
 
+  async function deleteUser(id) {
+    try {
+      const response = await fetch("http://localhost:3001/deleteUser"+id, {
+        method: "DELETE",
+      });
+      const resp = await response.json();
+      console.log(resp);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  const handleDelete = (e) => {
+    const id = e.target.value;
+    deleteUser(id);
+    loadUsers();
+  };
+
   return (
     <main>
       <div className="main__container">
-        <h1 style={{ paddingBottom: 15, color: "#343a40" }}>
-          User Management
-        </h1>
+        <h1 style={{ paddingBottom: 15, color: "#343a40" }}>User Management</h1>
         <h3 style={{ paddingBottom: 40 }}>
           Dashboard <span style={{ paddingLeft: 10, paddingRight: 10 }}>/</span>
           <span style={{ color: "#888" }}>Users</span>
@@ -66,9 +80,19 @@ const UserMng = () => {
                   <Link
                     style={{ textDecoration: "none" }}
                     class="btn btn-danger"
-                    onClick={() => {}}
                   >
-                    Delete
+                    <button
+                      style={{
+                        backgroundColor: "transparent",
+                        border: 0,
+                        color: "#fff",
+                        fontSize: 15,
+                      }}
+                      value={user.id}
+                      onClick={handleDelete}
+                    >
+                      Delete
+                    </button>
                   </Link>
                 </td>
               </tr>

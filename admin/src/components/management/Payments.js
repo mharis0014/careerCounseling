@@ -12,7 +12,7 @@ const Payments = () => {
 
   async function loadUsers() {
     try {
-      const response = await fetch("http://localhost:3001/getData");
+      const response = await fetch("http://localhost:3001/getUserData");
       const data = await response.json();
       setArrData(data);
 
@@ -25,9 +25,7 @@ const Payments = () => {
   return (
     <main>
       <div className="main__container">
-        <h1 style={{ paddingBottom: 15, color: "#343a40" }}>
-          Total Payments
-        </h1>
+        <h1 style={{ paddingBottom: 15, color: "#343a40" }}>Total Payments</h1>
         <h3 style={{ paddingBottom: 40 }}>
           Dashboard <span style={{ paddingLeft: 10, paddingRight: 10 }}>/</span>
           <span style={{ color: "#888" }}>Payments</span>
@@ -35,20 +33,20 @@ const Payments = () => {
         <table class="table border shadow">
           <thead class="thead-dark">
             <tr>
-              <th scope="col">#</th>
-              <th style={{ paddingRight: 80 }} scope="col">
-                Invoice_No
+              <th scope="col">Invoice_No</th>
+              <th style={{ paddingRight: 240 }} scope="col">
+                User
               </th>
-              <th style={{ paddingRight: 300 }} scope="col">
-                Doctor
+              <th style={{ paddingRight: 250 }} scope="col">
+                Counselor
               </th>
-              <th style={{ paddingRight: 140 }} scope="col">
+              <th style={{ paddingRight: 50 }} scope="col">
                 Amount
               </th>
-              <th style={{ paddingRight: 140 }} scope="col">
+              <th style={{ paddingRight: 80 }} scope="col">
                 Paid_On
               </th>
-              <th style={{ paddingRight: 100 }} scope="col">
+              <th style={{ paddingRight: 80 }} scope="col">
                 Status
               </th>
               <th style={{ paddingRight: 150 }}>Action</th>
@@ -57,8 +55,22 @@ const Payments = () => {
           <tbody>
             {arrayData.map((user, index) => (
               <tr>
-                <th scope="row">{index + 1}</th>
-                <td>#INV-00{index + 1}</td>
+                <th scope="row">#INV-00{index + 1}</th>
+                <td>
+                  <div>
+                    <p>{user.name}</p>
+                    <p style={{ color: "#888" }}>#{user.id}</p>
+                    <p
+                      style={{
+                        fontStyle: "italic",
+                        textDecorationLine: "underline",
+                        color: "blue",
+                      }}
+                    >
+                      {user.email}
+                    </p>
+                  </div>
+                </td>
                 <td>
                   <div className="row">
                     <img
@@ -82,8 +94,8 @@ const Payments = () => {
                     </div>
                   </div>
                 </td>
-                <td>{user.email}</td>
-                <td>{user.education}</td>
+                <td>$150</td>
+                <td>11 Apr 2020</td>
                 <td>Confirm</td>
                 <td>
                   <Link

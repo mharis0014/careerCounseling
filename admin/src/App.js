@@ -10,10 +10,12 @@ import PaymentReq from "./components/pendings/PaymentReq";
 import CounselorReq from "./components/pendings/CounselorReq";
 import Appointments from "./components/management/Appointments";
 import CounselorMng from "./components/management/CounselorMng";
+import Login from "./components/profile/Login";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 const App = () => {
   const [sidebarOpen, setsidebarOpen] = useState(false);
+  const [loggedin, setLoggedIn] = useState(false);
   const openSidebar = () => {
     setsidebarOpen(true);
   };

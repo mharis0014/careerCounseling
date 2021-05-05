@@ -21,11 +21,13 @@ const SignupScreen = (props) => {
   const [emailErr, setEmailErr] = useState('');
   const [passErr, setPassErr] = useState('');
 
-  let nameRjx = /^[a-zA-z]+$/;
+  let digNchar = /^[0-9*#+]+$/;
+  let nameRjx = /^([A-Za-z]+?)\s([A-Za-z]+?)$/;
   let emailRjx = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
   let medRjx = /^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})/;
   let strRjx = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/;
 
+  let digNcharValid = digNchar.test(name);
   let nameValid = nameRjx.test(name);
   let emailValid = emailRjx.test(email);
   let strong = strRjx.test(password);
@@ -34,8 +36,10 @@ const SignupScreen = (props) => {
   const nameValidator = () => {
     if (name == '') {
       setNameErr('name field cannot be empty');
-    } else if (!nameValid) {
+    } else if (digNcharValid) {
       setNameErr('name field must be alphabetic');
+    } else if (!nameValid) {
+      setNameErr('please enter fullname here');
     } else {
       setNameErr('');
     }
@@ -88,7 +92,11 @@ const SignupScreen = (props) => {
             props.navigation.replace('User Login Screen');
             ToastAndroid.show('Signed up successfully !', ToastAndroid.SHORT);
           } else {
-            Alert.alert('Wrong credentials', 'You have entered the invalid credentials. Please follow the instructions!', [{text: 'OK'}]);
+            Alert.alert(
+              'Wrong credentials',
+              'You have entered the invalid credentials. Please follow the instructions!',
+              [{text: 'OK'}],
+            );
           }
         } catch (e) {
           console.log(e);

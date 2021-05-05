@@ -12,7 +12,9 @@ const ProfileCardScreen = (props) => {
 
   const usersOnline = useSelector((state) => state.usersOnline);
   const name1 = props.route.params.name;
+  const email1 = props.route.params.email
   const img1 = props.route.params.imageData;
+  const id = props.route.params.id;
 
   const showPicker = () => {
     setVisible(true);
@@ -22,8 +24,20 @@ const ProfileCardScreen = (props) => {
     setVisible(false);
   };
 
-  const handlePicker = () => {
-    props.navigation.navigate('Pricing Screen');
+  const handlePicker = (date) => {
+
+    
+    props.navigation.navigate('Pricing Screen', {
+      'counselorImage': img1,
+      'counselorId': id,
+      'counselorName': name1,
+      'counselorEmail': email1,
+      'date': date.toString(),
+    });
+    console.log("A date has been picked: " + date);
+    console.log('An id has been picked: ' + id);
+    
+    
     hidePicker();
     booked('Appointment Booked Successfully!');
     setBtnColor('#aef2ae');
@@ -138,6 +152,7 @@ const ProfileCardScreen = (props) => {
         mode="datetime"
         onConfirm={handlePicker}
         onCancel={hidePicker}
+        v
       />
     </View>
   );

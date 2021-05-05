@@ -10,13 +10,14 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   ToastAndroid,
-  Alert
+  Alert,
 } from 'react-native';
 import {ActionSheet, Root} from 'native-base';
 import ImagePicker from 'react-native-image-crop-picker';
 import AsyncStorage from '@react-native-community/async-storage';
 
-const nameRjx = /^[a-zA-z]+$/;
+const digNchar = /^[0-9*#+]+$/;
+const nameRjx = /^([A-Za-z]+?)\s([A-Za-z]+?)$/;
 const emailRjx = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 const medRjx = /^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})/;
 const strRjx = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/;
@@ -98,12 +99,15 @@ export default class SignupScreen extends Component {
 
   nameValidator = () => {
     console.log({name: this.state.name});
+    let digNcharValid = digNchar.test(this.state.name);
     let nameValid = nameRjx.test(this.state.name);
 
     if (this.state.name == '') {
       this.setState({nameErr: 'name field cannot be empty'});
-    } else if (!nameValid) {
+    } else if (digNcharValid) {
       this.setState({nameErr: 'name must be alphabetic'});
+    } else if (!nameValid) {
+      this.setState({nameErr: 'please enter fullname here'});
     } else {
       this.setState({nameErr: ''});
     }
@@ -124,7 +128,7 @@ export default class SignupScreen extends Component {
     let strong = strRjx.test(this.state.password);
     let medium = medRjx.test(this.state.password);
     if (this.state.password == '') {
-      this.setState('password field cannot be empty');
+      this.setState({passErr: 'password field cannot be empty'});
     } else if (!medium) {
       this.setState({
         passErr:

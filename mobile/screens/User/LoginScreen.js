@@ -8,9 +8,10 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
-  ToastAndroid
+  ToastAndroid,
 } from 'react-native';
 import {useDispatch} from 'react-redux';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const LoginScreen = (props) => {
   const dispatch = useDispatch();
@@ -31,7 +32,22 @@ const LoginScreen = (props) => {
       .then((res) => res.json())
       .then(async (data) => {
         try {
-          //  await AsyncStorage.setItem('token', data.token);
+          var items = {
+            userId: data[0],
+            userName: data[1],
+            userEmail: data[2],
+            token: data[3],
+          };
+
+          
+
+          await AsyncStorage.setItem('item', JSON.stringify(items));
+          // const userData = AsyncStorage.getItem('item');
+          // const afterParse = JSON.parse(await AsyncStorage.getItem('item'));
+          // const userEmail = afterParse.userEmail;
+          // const userName = afterParse.userName;
+          // const userId = afterParse.userId;
+
           dispatch({type: 'server/join', data: 'u_' + email}); //Without Check else will not work
           global.c_user = email;
           props.navigation.replace('Home Screen');

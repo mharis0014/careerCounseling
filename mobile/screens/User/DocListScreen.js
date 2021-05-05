@@ -23,7 +23,7 @@ export default class def extends React.Component {
 
   fetchData() {
     this.setState({loading: true});
-    fetch('http://10.0.2.2:3000/getData')
+    fetch('http://10.0.2.2:3000/getCounselorData')
       .then((res) => res.json())
       .then((resJson) => {
         this.setState({arrayData: resJson});
@@ -49,7 +49,7 @@ export default class def extends React.Component {
             />
           </View>
           <View style={{paddingTop: 20}}>
-            <Text style={{fontSize: 15}}>name is {props.item.name}</Text>
+            <Text style={{fontSize: 15}}>{props.item.name}</Text>
             <Text style={{color: '#888', paddingTop: 10}}>
               35 Years Experience
             </Text>

@@ -4,8 +4,16 @@ import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Iconm from 'react-native-vector-icons/MaterialIcons';
 import Iconz from 'react-native-vector-icons/Zocial';
+
 function PayOptScreen(props) {
+  
   const [isModalVisible, setModalVisible] = useState(true);
+    const counselorId = props.route.params.counselorId;
+    const counselorName = props.route.params.counselorName;
+    const counselorImage = props.route.params.counselorImage;
+    const counselorEmail = props.route.params.counselorEmail;
+  const pakage = props.route.params.pakage;
+  const date = props.route.params.date;
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -31,7 +39,16 @@ function PayOptScreen(props) {
               Choose a Payment Method
             </Text>
             <TouchableOpacity
-              onPress={() => props.navigation.navigate('ScanQR Screen')}
+              onPress={() =>
+                props.navigation.navigate('ScanQR Screen', {
+                  'counselorImage': counselorImage,
+                  'counselorId': counselorId,
+                  'counselorName': counselorName,
+                  'counselorEmail': counselorEmail,
+                  'pakage': pakage,
+                  'date': date,
+                })
+              }
               style={[styles.card, {backgroundColor: '#99cc00'}]}>
               <Iconm name="payment" size={38} color="#fff" />
               <View style={{paddingLeft: 10}}>

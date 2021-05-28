@@ -1,26 +1,64 @@
 import React, { useState, useEffect } from "react";
 import "../adminStyles/AdminStyles.css";
 import { Link } from "react-router-dom";
-import Avatar from "../../assets/avatar.svg";
 
 const PaymentReq = (props) => {
   const [arrayData, setArrData] = useState([]);
 
   useEffect(() => {
-    loadUsers();
+    loadAppointments();
   }, []);
 
-  async function loadUsers() {
+  async function loadAppointments() {
     try {
-      const response = await fetch("http://localhost:3001/getCounselorData");
+      const response = await fetch(
+        "http://localhost:3001/getAppointments/pending"
+      );
       const data = await response.json();
       setArrData(data);
 
-      console.log(data);
+      console.log(data[0]);
     } catch (e) {
       console.log(e);
     }
   }
+
+  const confirmAppointment = async (id) => {
+    try {
+      const response = await fetch(
+        "http://localhost:3001/updateAppointment"+id,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userID: arrayData.userId,
+            userName: arrayData.userName,
+            userEmail: arrayData.userEmail,
+            counselorEmail: arrayData.counselorEmail,
+            counselorName: arrayData.counselorName,
+            counselorId: arrayData.counselorId,
+            counselorImg: arrayData.counselorImage,
+            date: arrayData.date,
+            pakage: arrayData.pakage,
+            status: "confirmed",
+          }),
+        }
+      );
+      const resp = await response.json();
+      console.log(resp);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const handleConfirm = (e) => {
+    const id = e.target.value;
+    console.log(id);
+    confirmAppointment(id);
+    loadAppointments();
+  };
 
   return (
     <main>
@@ -60,8 +98,8 @@ const PaymentReq = (props) => {
                 <th scope="row">#INV-00{index + 1}</th>
                 <td>
                   <div>
-                    <p>{user.name}</p>
-                    <p style={{ color: "#888" }}>#{user.id}</p>
+                    <p>{user.userName}</p>
+                    <p style={{ color: "#888" }}>#{user.userId}</p>
                     <p
                       style={{
                         fontStyle: "italic",
@@ -69,21 +107,22 @@ const PaymentReq = (props) => {
                         color: "blue",
                       }}
                     >
-                      {user.email}
+                      {user.userEmail}
                     </p>
                   </div>
                 </td>
                 <td>
                   <div className="row">
                     <img
-                      src={Avatar}
+                      src={`data:image/jpeg;base64,${user.counselorImage}`}
+                      alt="counselor img"
                       height="60"
                       style={{ borderRadius: "50%", paddingRight: 15 }}
                       width="60"
                     />
                     <div>
-                      <p>{user.name}</p>
-                      <p style={{ color: "#888" }}>#{user.id}</p>
+                      <p>{user.counselorName}</p>
+                      <p style={{ color: "#888" }}>#{user.counselorId}</p>
                       <p
                         style={{
                           fontStyle: "italic",
@@ -91,14 +130,26 @@ const PaymentReq = (props) => {
                           color: "blue",
                         }}
                       >
-                        {user.email}
+                        {user.counselorEmail}
                       </p>
                     </div>
                   </div>
                 </td>
                 <td>$160</td>
-                <td>11 Apr 2019</td>
-                <td>Success</td>
+                <td>
+                  <div>
+                    <p>{user.date.slice(0, 10)}</p>
+                    <p
+                      style={{
+                        color: "blue",
+                        paddingTop: 5,
+                      }}
+                    >
+                      {user.date.slice(11)}
+                    </p>
+                  </div>
+                </td>
+                <td>{user.status}</td>
                 <td>
                   <Link
                     style={{ textDecoration: "none" }}
@@ -113,7 +164,10 @@ const PaymentReq = (props) => {
                     }}
                     class="btn btn-primary mr-2"
                   >
-                    <i className="fa fa-check" aria-hidden="true"></i>
+                    {/* <i className="fa fa-check" aria-hidden="true"></i> */}
+                    <button value={user.appointmentId} onClick={handleConfirm}>
+                      Confirm
+                    </button>
                   </Link>
                   <Link
                     style={{ textDecoration: "none" }}

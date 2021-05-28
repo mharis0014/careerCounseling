@@ -27,6 +27,14 @@ const counselorSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  status: {
+    type: String,
+    required :true
+  },
+  ratingAndFeedback: {
+    type: Array,
+    required: true,
+  },
   //For Video Chat
   sessionid: {
     type: String,

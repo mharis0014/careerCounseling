@@ -6,12 +6,18 @@ import Chart from "../charts/Chart";
 const Main = () => {
   const [userData, setUserData] = useState([]);
   const [counselorData, setCounselorData] = useState([]);
-    const [appointmentData, setAppointmentData] = useState([]);
+  const [appointmentData, setAppointmentData] = useState([]);
+  const [appointmentPrice, setAppointmentPrice] = useState("");
+  const [pendingAppointments, setPendingAppointments] = useState([]);
+  const [requestedCounselors, setRequestedCounselors] = useState([]);
 
   useEffect(() => {
     loadUsers();
     loadCounselors();
     loadAppointments();
+    loadConfirmAppointments();
+    loadPendingPayments();
+    loadRequestedCounselors();
   }, []);
 
   async function loadUsers() {
@@ -19,8 +25,6 @@ const Main = () => {
       const response = await fetch("http://localhost:3001/getUserData");
       const data = await response.json();
       setUserData(data);
-
-      console.log(data);
     } catch (e) {
       console.log(e);
     }
@@ -28,25 +32,67 @@ const Main = () => {
 
   async function loadCounselors() {
     try {
-      const response = await fetch("http://localhost:3001/getCounselorData");
+      const response = await fetch(
+        "http://localhost:3001/getCounselorData/confirmed"
+      );
       const data = await response.json();
       setCounselorData(data);
-
-      console.log(data);
     } catch (e) {
       console.log(e);
     }
   }
 
-    async function loadAppointments() {
-      try {
-        const response = await fetch("http://localhost:3001/getAppointments");
-        const data = await response.json();
-        setAppointmentData(data);
-      } catch (e) {
-        console.log(e);
+  async function loadConfirmAppointments() {
+    try {
+      const response = await fetch(
+        "http://localhost:3001/getAppointments/confirmed"
+      );
+      const data = await response.json();
+
+      var totalSum = 0;
+      for (var i = 0; i < data.length; i++) {
+        var sliced = data[i].price.slice(1);
+        totalSum = totalSum + parseInt(sliced);
       }
+      setAppointmentPrice(totalSum);
+    } catch (e) {
+      console.log(e);
     }
+  }
+
+  async function loadPendingPayments() {
+    try {
+      const response = await fetch(
+        "http://localhost:3001/getAppointments/pending"
+      );
+      const data = await response.json();
+      setPendingAppointments(data);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  async function loadAppointments() {
+    try {
+      const response = await fetch("http://localhost:3001/getAppointments");
+      const data = await response.json();
+      setAppointmentData(data);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  async function loadRequestedCounselors() {
+    try {
+      const response = await fetch(
+        "http://localhost:3001/getCounselorData/requested"
+      );
+      const data = await response.json();
+      setRequestedCounselors(data);
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   return (
     <main>
@@ -125,11 +171,11 @@ const Main = () => {
             <div className="charts__right__cards">
               <div className="card1">
                 <h1>Income</h1>
-                <p>$75,300</p>
+                <p>${appointmentPrice}</p>
               </div>
               <div className="card2">
                 <h1>Counselors</h1>
-                <p>16</p>
+                <p>{requestedCounselors}</p>
               </div>
               <div className="card3">
                 <h1>Free Users</h1>
@@ -137,7 +183,7 @@ const Main = () => {
               </div>
               <div className="card4">
                 <h1>Payments</h1>
-                <p>37</p>
+                <p>{pendingAppointments.length}</p>
               </div>
             </div>
           </div>

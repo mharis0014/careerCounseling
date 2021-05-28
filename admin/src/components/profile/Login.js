@@ -4,7 +4,7 @@ import bgImg from "../../assets/bg.png";
 import Sidebar from "./Sidebar";
 import Main from "./Main";
 
-const Login = (props) => {
+const Login = () => {
   return (
     <Container>
       <Wrapper>

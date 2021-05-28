@@ -12,11 +12,11 @@ const Payments = () => {
 
   async function loadUsers() {
     try {
-      const response = await fetch("http://localhost:3001/getUserData");
+      const response = await fetch(
+        "http://localhost:3001/getPayments/confirmed"
+      );
       const data = await response.json();
       setArrData(data);
-
-      console.log(data);
     } catch (e) {
       console.log(e);
     }
@@ -58,7 +58,7 @@ const Payments = () => {
                 <th scope="row">#INV-00{index + 1}</th>
                 <td>
                   <div>
-                    <p>{user.name}</p>
+                    <p>{user.userName}</p>
                     <p style={{ color: "#888" }}>#{user.id}</p>
                     <p
                       style={{
@@ -67,20 +67,20 @@ const Payments = () => {
                         color: "blue",
                       }}
                     >
-                      {user.email}
+                      {user.userEmail}
                     </p>
                   </div>
                 </td>
                 <td>
                   <div className="row">
                     <img
-                      src={Avatar}
+                      src={`data:image/jpeg;base64,${user.counselorImageData}`}
                       height="60"
                       style={{ borderRadius: "50%", paddingRight: 15 }}
                       width="60"
                     />
                     <div>
-                      <p>{user.name}</p>
+                      <p>{user.counselorName}</p>
                       <p style={{ color: "#888" }}>#{user.id}</p>
                       <p
                         style={{
@@ -89,14 +89,14 @@ const Payments = () => {
                           color: "blue",
                         }}
                       >
-                        {user.email}
+                        {user.counselorEmail}
                       </p>
                     </div>
                   </div>
                 </td>
-                <td>$150</td>
-                <td>11 Apr 2020</td>
-                <td>Confirm</td>
+                <td>{user.price}</td>
+                <td>{user.date}</td>
+                <td>{user.status}</td>
                 <td>
                   <Link
                     style={{ textDecoration: "none" }}
@@ -107,7 +107,6 @@ const Payments = () => {
                   <Link
                     style={{ textDecoration: "none" }}
                     class="btn btn-danger"
-                    onClick={() => {}}
                   >
                     <i className="fa fa-print"></i> Print
                   </Link>

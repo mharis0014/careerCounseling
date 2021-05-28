@@ -1,94 +1,117 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
-import Logo from "../images/logo.png";
-import "../index.css";
+import React, { useState, useEffect } from "react";
+import "./Navbar.css";
+import { Button } from "./Button";
+import { Link, useHistory } from "react-router-dom";
+import { GiCardPick } from "react-icons/gi";
+import { FaBars, FaTimes } from "react-icons/fa";
+import { IconContext } from "react-icons/lib";
 
-const Navbar = () => {
+function Navbar() {
+  const history = useHistory();
+  const [click, setClick] = useState(false);
+  const [button, setButton] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  const handleClick = () => setClick(!click);
+  const closeMobileMenu = () => setClick(false);
+
+  const showButton = () => {
+    localStorage.getItem("item") && setLoggedIn(true);
+    if (window.innerWidth <= 960) {
+      setButton(false);
+    } else {
+      setButton(true);
+    }
+  };
+
+  useEffect(() => {
+    showButton();
+    window.addEventListener("resize", showButton);
+    return window.removeEventListener("resize", showButton);
+  }, [showButton]);
+
   return (
     <>
-      <div className="container-fluid nav_bg">
-        <div className="row">
-          <div className="col-10 mx-auto">
-            <nav className="navbar navbar-expand-lg navbar-light bg-white">
-              <div className="container-fluid bg-white">
-                <NavLink className="navbar-brand" to="/">
-                  <img src={Logo} height="50px" alt="Logo" />
-                </NavLink>
-                <button
-                  className="navbar-toggler"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#navbarSupportedContent"
-                  aria-controls="navbarSupportedContent"
-                  aria-expanded="false"
-                  aria-label="Toggle navigation"
+      <IconContext.Provider value={{ color: "#fff" }}>
+        <nav className="navbar">
+          <div className="navbar-container container">
+            <Link to="/" className="navbar-logo" onClick={closeMobileMenu}>
+              <GiCardPick size="2.2rem" className="navbar-icon" />
+              CAREER FINDER
+            </Link>
+            <div className="menu-icon" onClick={handleClick}>
+              {click ? <FaTimes /> : <FaBars />}
+            </div>
+            <ul className={click ? "nav-menu active" : "nav-menu"}>
+              <li className="nav-item">
+                <Link to="/" className="nav-links" onClick={closeMobileMenu}>
+                  Home
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link
+                  to="/services"
+                  className="nav-links"
+                  onClick={closeMobileMenu}
                 >
-                  <span className="navbar-toggler-icon"></span>
-                </button>
-                <div
-                  className="collapse navbar-collapse"
-                  id="navbarSupportedContent"
+                  Counselors
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link
+                  to="/appointments"
+                  className="nav-links"
+                  onClick={closeMobileMenu}
                 >
-                  <ul className="navbar-nav ml-auto mb-2 mb-lg-0">
-                    <li className="nav-item">
-                      <NavLink
-                        activeClassName="menu_active"
-                        exact
-                        className="nav-link active"
-                        aria-current="page"
-                        to="/"
-                      >
-                        Home
-                      </NavLink>
-                    </li>
-                    <li className="nav-item">
-                      <NavLink
-                        activeClassName="menu_active"
-                        exact
-                        className="nav-link"
-                        to="/counselors"
-                      >
-                        Counselors
-                      </NavLink>
-                    </li>
-                    <li className="nav-item">
-                      <NavLink
-                        activeClassName="menu_active"
-                        exact
-                        className="nav-link"
-                        to="/about"
-                      >
-                        About
-                      </NavLink>
-                    </li>
-                    <li className="nav-item">
-                      <NavLink
-                        activeClassName="menu_active"
-                        exact
-                        className="nav-link"
-                        to="/contact"
-                      >
-                        Contact
-                      </NavLink>
-                    </li>
-                    <li className="nav-item ml-5">
-                      <NavLink
-                        className="btn-signin"
-                        exact
-                        to="/signin"
-                      >
-                        SignIn
-                      </NavLink>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </nav>
+                  Appointments
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link
+                  to="/career-test"
+                  className="nav-links"
+                  onClick={closeMobileMenu}
+                >
+                  Career Test
+                </Link>
+              </li>
+              {loggedIn ? (
+                <li className="nav-item">
+                  <Link
+                    onClick={() => {
+                      localStorage.removeItem("item");
+                      history.push("/login");
+                      setLoggedIn(false);
+                    }}
+                    className="nav-links"
+                  >
+                    Logout
+                  </Link>
+                </li>
+              ) : null}
+              <li className="nav-btn">
+                {button ? (
+                  <Link to="/sign-up" className="btn-link">
+                    <Button buttonStyle="btn--outline">SIGN UP</Button>
+                  </Link>
+                ) : (
+                  <Link to="/sign-up" className="btn-link">
+                    <Button
+                      buttonStyle="btn--outline"
+                      buttonSize="btn--mobile"
+                      onClick={closeMobileMenu}
+                    >
+                      SIGN UP
+                    </Button>
+                  </Link>
+                )}
+              </li>
+            </ul>
           </div>
-        </div>
-      </div>
+        </nav>
+      </IconContext.Provider>
     </>
   );
-};
+}
 
 export default Navbar;

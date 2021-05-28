@@ -1,31 +1,39 @@
 const express = require("express");
-const bodyParser = require("body-parser");
+var cors = require("cors");
 const mongoose = require("mongoose");
-var path = require('path');
+var path = require("path");
 const app = express();
-const PORT = 3000;
+const PORT = 3001;
 const { mongoUrl } = require("./keys");
 const { v1: uuid } = require("uuid");
-const messageHandler = require("./handlers/message.handler");
 
-var server = require('http').createServer(app);
-var io = require('socket.io')(server);
+var server = require("http").createServer(app);
+var io = require("socket.io")(server);
 
 require("./models/User");
 require("./models/Counselor");
+require("./models/Appointment");
+require('./models/Rating');
+require('./models/Admin');
 
 const requireToken = require("./middleware/requireToken");
 const authRoutes = require("./routes/authRoutes");
-app.use(bodyParser.json());
+app.use(cors());
+app.use(
+  express.json({limit: '50mb',
+    type: ["application/json", "text/plain"],
+  })
+);
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(authRoutes);
 
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "jade");
 
 mongoose.connect(mongoUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useCreateIndex: true
+  useCreateIndex: true,
 });
 
 mongoose.connection.on("connected", () => {
@@ -36,22 +44,20 @@ mongoose.connection.on("error", (err) => {
   console.log("Error on index.js line 31 server side", err);
 });
 
-app.get("/", requireToken, (req, res) => {
-});
+app.get("/", requireToken, (req, res) => {});
 
 const users = {};
-const toFromMessages = {};
 
-io.on("connection", socket => {
+io.on("connection", (socket) => {
   console.log("a user connected!");
 
   console.log(socket.id);
-  users[socket.id] = { userId:  uuid() };
+  users[socket.id] = { userId: uuid() };
   socket.on("disconnect", () => {
     delete users[socket.id];
     io.emit("action", { type: "users_online", data: createUsersOnline() });
   });
-  socket.on("action", action => {
+  socket.on("action", (action) => {
     switch (action.type) {
       case "server/join":
         console.log("Got join event", action.data);
@@ -59,7 +65,7 @@ io.on("connection", socket => {
         users[socket.id].avatar = createUserAvatarUrl();
         io.emit("action", {
           type: "users_online",
-          data: createUsersOnline()
+          data: createUsersOnline(),
         });
         socket.emit("action", { type: "self_user", data: users[socket.id] });
         break;
@@ -76,8 +82,8 @@ io.on("connection", socket => {
               type: "private_message",
               data: {
                 ...action.data,
-                conversationId: from
-              }
+                conversationId: from,
+              },
             });
             break;
           }
@@ -100,3 +106,4 @@ function createUserAvatarUrl() {
 }
 
 server.listen(PORT);
+console.log("server running on port " + PORT)

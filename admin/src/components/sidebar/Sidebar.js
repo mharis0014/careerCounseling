@@ -55,7 +55,9 @@ const Sidebar = ({ sidebarOpen, closeSidebar }) => {
         </div>
         <div className="sidebar__logout">
           <i className="fa fa-power-off"></i>
-          <a href="#">Log out</a>
+          <a onClick={() => localStorage.removeItem("item")} href="/">
+            Log out
+          </a>
         </div>
       </div>
     </div>

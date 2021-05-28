@@ -1,87 +1,83 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import logo from "../../assets/logo_transparent.png";
 import Input from "./Input";
+import logo from "../../assets/logo_transparent.png";
 
 const Sidebar = (props) => {
-  const [toggle, setToggle] = useState(true);
+  const history = useHistory();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  return toggle ? (
+  const loginCred = async () => {
+    fetch("http://localhost:3001/adminSignin", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+    })
+      .then((res) => res.json())
+      .then(async (data) => {
+        try {
+           var items = {
+             adminId: data[0],
+             token: data[1],
+           };
+
+           localStorage.setItem("item", JSON.stringify(items));
+           data[1] === "undefined"
+             ? history.push("/")
+             : history.push("/dashboard");
+        } catch (e) {
+          console.log(e);
+        }
+      });
+  };
+
+  const handlePassword = (e) => {
+    console.log("Password: " + e.target.value);
+    setPassword(e.target.value);
+  };
+  const handleEmail = (e) => {
+    setEmail(e.target.value);
+    console.log("Email: " + e.target.value);
+  };
+
+  const handleLogin = (e) => {
+    console.log(email, password);
+    e.preventDefault();
+    loginCred();
+  };
+
+  return (
     <Container>
       <LogoWrapper>
-        <img src={logo} alt="" />
+        <img src={logo} alt="logo" />
       </LogoWrapper>
-      <Form>
+      <Form onSubmit={handleLogin}>
         <div>
           <h3>
-            <span style={{ color: "#5dc399" }}>User</span> Register
-            <span
-              onClick={() => setToggle(!toggle)}
-              style={{
-                marginLeft: "70px",
-                fontWeight: "normal",
-                fontSize: 20,
-                color: "#888",
-                cursor: "pointer",
-              }}
-            >
-              are you a Counselor ?
-            </span>
+            <span style={{ color: "#5dc399" }}>Admin</span> Login
           </h3>
         </div>
-        <Input placeholder="Full Name" />
-        <Input type="email" placeholder="Email" />
-        <Input type="password" placeholder="Password" />
-        <button onClick={() => {}}>Sign Up</button>
+        <Input onChange={handleEmail} type="email" placeholder="Email" />
+        <Input
+          onChange={handlePassword}
+          type="password"
+          placeholder="Password"
+        />
+        <button>Sign In</button>
       </Form>
       <div>
         <Terms>
           By signing up, I agree to the Privacy Policy <br /> and Terms of
           Service
         </Terms>
-        <h4>
-          Already have an account? <span>Sign In</span>
-        </h4>
-      </div>
-    </Container>
-  ) : (
-    <Container>
-      <LogoWrapper>
-        <img src={logo} alt="" />
-      </LogoWrapper>
-      <Form>
-        <div>
-          <h3>
-            <span style={{ color: "#5dc399" }}>Counselor</span> Register
-            <span
-              onClick={() => setToggle(!toggle)}
-              style={{
-                marginLeft: "40px",
-                fontWeight: "normal",
-                fontSize: 20,
-                color: "#888",
-                cursor: "pointer",
-              }}
-            >
-              not a Counselor ?
-            </span>
-          </h3>
-        </div>
-        <Input placeholder="Name" />
-        <Input type="email" placeholder="Email" />
-        <Input type="text" placeholder="Education" />
-        <Input type="text" placeholder="About" />
-        <Input type="password" placeholder="Password" />
-        <button>Sign Up</button>
-      </Form>
-      <div>
-        <Terms>
-          By signing up, I agree to the Privacy Policy <br /> and Terms of
-          Service
-        </Terms>
-        <h4>
-          Already have an account? <span>Sign In</span>
-        </h4>
+        <h4>Don't have an account? Sign Up</h4>
       </div>
     </Container>
   );
@@ -177,5 +173,4 @@ const Container = styled.div`
     }
   }
 `;
-
 export default Sidebar;

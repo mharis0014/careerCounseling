@@ -11,7 +11,7 @@ const CounselorReq = () => {
 
   async function loadUsers() {
     try {
-      const response = await fetch("http://localhost:3001/getCounselorData");
+      const response = await fetch("http://localhost:3001/getCounselorData/requested");
       const data = await response.json();
       setArrData(data);
 
@@ -20,6 +20,42 @@ const CounselorReq = () => {
       console.log(e);
     }
   }
+
+  const confirmCounselor = async (id) => {
+    try {
+      const response = await fetch(
+        "http://localhost:3001/updateCounselor" + id,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            fileList: {
+              contentType: "image/png",
+              data: arrayData.imageData,
+            },
+            name: arrayData.name,
+            email: arrayData.email,
+            password: arrayData.password,
+            education: arrayData.education,
+            about: arrayData.about,
+            status: "confirmed",
+          }),
+        }
+      );
+      const resp = await response.json();
+      console.log(resp);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const handleClick = (e) => {
+    const id = e.target.value;
+    confirmCounselor(id);
+    loadUsers();
+  };
 
   return (
     <main>
@@ -91,7 +127,10 @@ const CounselorReq = () => {
                     }}
                     class="btn btn-primary mr-2"
                   >
-                    <i className="fa fa-check" aria-hidden="true"></i>
+                    <button value={counselor.id} onClick={handleClick}>
+                      Confirm
+                    </button>
+                    {/* <i className="fa fa-check" aria-hidden="true"></i> */}
                   </Link>
                   <Link
                     style={{ textDecoration: "none" }}

@@ -13,7 +13,8 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-  }, //For Video Chat
+  },
+  //For Video Chat
   sessionid: {
     type: String,
   },

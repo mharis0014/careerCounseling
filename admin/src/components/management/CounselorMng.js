@@ -11,9 +11,12 @@ const CounselorMng = () => {
 
   async function loadCounselors() {
     try {
-      const response = await fetch("http://localhost:3001/getCounselorData");
+      const response = await fetch(
+        "http://localhost:3001/getCounselorData/confirmed"
+      );
       const data = await response.json();
       setArrData(data);
+      console.log(data);
     } catch (e) {
       console.log(e);
     }
@@ -21,7 +24,7 @@ const CounselorMng = () => {
   async function deleteCounselor(id) {
     try {
       const response = await fetch(
-        "http://localhost:3001/deleteCounselor"+id,
+        "http://localhost:3001/deleteCounselor" + id,
         {
           method: "DELETE",
         }
@@ -42,7 +45,9 @@ const CounselorMng = () => {
   return (
     <main>
       <div className="main__container">
-        <h1 style={{ paddingBottom: 15, color: "#343a40" }}>Counselor Management</h1>
+        <h1 style={{ paddingBottom: 15, color: "#343a40" }}>
+          Counselor Management
+        </h1>
         <h3 style={{ paddingBottom: 40 }}>
           Dashboard <span style={{ paddingLeft: 10, paddingRight: 10 }}>/</span>
           <span style={{ color: "#888" }}>Counselors</span>
@@ -84,7 +89,37 @@ const CounselorMng = () => {
                 <td>{counselor.name}</td>
                 <td>{counselor.email}</td>
                 <td>{counselor.education}</td>
-                <td>⭐⭐⭐⭐⭐</td>
+                <td>
+                  {(() => {
+                    var rawRatingIndex = 0;
+                    for (
+                      var i = 0;
+                      i < counselor.ratingAndFeedback.length;
+                      i++
+                    ) {
+                      rawRatingIndex =
+                        rawRatingIndex +
+                        counselor.ratingAndFeedback[i].ratingIndex;
+                    }
+                    var avgRatingIndex = Math.round(
+                      rawRatingIndex / counselor.ratingAndFeedback.length
+                    );
+                    switch (avgRatingIndex) {
+                      case 1:
+                        return "⭐";
+                      case 2:
+                        return "⭐⭐";
+                      case 3:
+                        return "⭐⭐⭐";
+                      case 4:
+                        return "⭐⭐⭐⭐";
+                      case 5:
+                        return "⭐⭐⭐⭐⭐";
+                      default:
+                        return "Not Rated Yet";
+                    }
+                  })()}
+                </td>
                 <td>
                   <Link
                     style={{ textDecoration: "none" }}

@@ -16,8 +16,11 @@ const PricingScreen = (props) => {
       'counselorName': CounselorName,
       'counselorEmail': counselorEmail,
       'date': date,
-      'pakage': e,
+      'pakage': e.package,
+      'price': e.price
     });
+    console.log(e.package);
+    console.log(e.price);
   };
 
   return (
@@ -27,7 +30,7 @@ const PricingScreen = (props) => {
           color="#4f9deb"
           title="Basic"
           price="$6.99"
-          onButtonPress={() => selectPkgBtn('Basic')}
+          onButtonPress={() => selectPkgBtn({package: 'Basic', price: '$6.99'})}
           info={[
             'valid for 1 day',
             'Unlimited Text Chat',
@@ -39,7 +42,9 @@ const PricingScreen = (props) => {
           color="#FF6161"
           title="Standard"
           price="$14.99"
-          onButtonPress={() => selectPkgBtn('Standard')}
+          onButtonPress={() =>
+            selectPkgBtn({package: 'Standard', price: '$14.99'})
+          }
           info={[
             'valid for 1 hour',
             'Video Call',
@@ -53,7 +58,9 @@ const PricingScreen = (props) => {
           color="#99cc00"
           title="Premium"
           price="$29.99"
-          onButtonPress={() => selectPkgBtn('Premium')}
+          onButtonPress={() =>
+            selectPkgBtn({package: 'Premium', price: '$29.99'})
+          }
           info={[
             'valid for 7 days',
             'Video Call',

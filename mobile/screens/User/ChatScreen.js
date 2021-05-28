@@ -6,7 +6,16 @@ import {Header, Avatar} from 'react-native-elements';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {Icon} from 'react-native-elements';
+
 const ChatScreen = (props) => {
+  const counselorId = props.route.params.counselorId;
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      console.log('This will run after 30 second!');
+      props.navigation.navigate('Ratings Screen', {id: counselorId});
+    }, 30000);
+    return () => clearTimeout(timer);
+  }, []);
   const dispatch = useDispatch();
   const selfUser = useSelector((state) => state.selfUser);
   var conversations = useSelector((state) => state.conversations);
@@ -72,6 +81,7 @@ const ChatScreen = (props) => {
               source={{
                 uri: `data:image/jpg;base64,${img}`,
               }}
+              onPress={() => props.navigation.navigate('Ratings Screen')}
             />
           }
           centerComponent={{
@@ -100,7 +110,10 @@ const ChatScreen = (props) => {
                     type: 'server/private_message',
                     data: {message: message, conversationId: userId},
                   });
-                  props.navigation.navigate('Videochat', {value: 'video'});
+                  props.navigation.navigate('Videochat', {
+                    value: 'video',
+                    name: name,
+                  });
                 }}
               />
               <Icon
@@ -123,7 +136,10 @@ const ChatScreen = (props) => {
                     type: 'server/private_message',
                     data: {message: message, conversationId: userId},
                   });
-                  props.navigation.navigate('Videochat', {value: 'audio'});
+                  props.navigation.navigate('Videochat', {
+                    value: 'audio',
+                    name: name,
+                  });
                 }}
               />
             </>

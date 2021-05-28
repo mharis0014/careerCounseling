@@ -10,59 +10,73 @@ import {
 import {Header} from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import AsyncStorage from '@react-native-community/async-storage';
+import StatusPill from '../../components/StatusPill';
 
-export default class DocList extends React.Component {
+export default class Appointments extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       arrayData: [],
+      bgColor: ['#3fc495', '#3664d4', '#f6c90e', 'red'],
       loading: true,
     };
   }
 
+  getUserData = async () => {
+    const afterParse = JSON.parse(await AsyncStorage.getItem('item'));
+    const userId = afterParse.userId;
+    this.fetchData(userId);
+  };
   componentDidMount() {
-    this.fetchData();
+    this.getUserData();
   }
 
-  fetchData() {
+  fetchData(userId) {
     this.setState({loading: true});
-    fetch('http://10.0.2.2:3000/getCounselorData/confirmed')
+    fetch('http://10.0.2.2:3000/getUserAppointments/' + userId)
       .then((res) => res.json())
       .then((resJson) => {
-        this.setState({ arrayData: resJson });
+        console.log(resJson[0].status);
+        this.setState({arrayData: resJson});
         this.setState({loading: false});
       })
       .catch((e) => console.log(e));
   }
 
-  docListCompoment = (props) => (
+  appointmentListComp = (props) => (
     <View style={styles.container}>
       <TouchableOpacity
-        onPress={() => {
-          this.props.navigation.navigate('Profile Card', props.item);
-          console.log('DOC LIST SCREEN: ' + props.item.id);
-        }}
+        onPress={() =>
+          this.props.navigation.navigate('Profile Card', props.item)
+        }
         style={styles.card}>
         <View style={{flexDirection: 'row'}}>
           <View style={{padding: 17}}>
             <Image
               style={{height: 60, width: 60, borderRadius: 30}}
               source={{
-                uri: `data:image/jpg;base64,${props.item.imageData}`,
+                uri: `data:image/jpg;base64,${props.item.counselorImage}`,
               }}
             />
           </View>
-          <View style={{paddingTop: 20}}>
-            <Text style={{fontSize: 15}}>{props.item.name}</Text>
-            <Text style={{color: '#888', paddingTop: 10}}>
-              35 Years Experience
+          <View style={{paddingTop: 13}}>
+            <Text style={{fontSize: 15}}>{props.item.counselorName}</Text>
+            <Text style={{color: 'blue', paddingTop: 3}}>
+              {props.item.counselorEmail}
             </Text>
           </View>
-          <View style={{paddingTop: 20, paddingLeft: 40}}>
-            <Text style={{color: '#888'}}>General Physicial</Text>
-            <Text style={{paddingTop: 13, paddingLeft: 13, fontSize: 15}}>
-              ⭐⭐⭐⭐⭐
-            </Text>
+          <View style={{paddingTop: 17, paddingLeft: 60}}>
+            <StatusPill
+              status={props.item.status}
+              bgcolor={this.state.bgColor[Math.floor(Math.random() * 4)]}
+            />
+
+            <Text style={{color: '#888'}}>Starting in</Text>
+            <Text style={{fontSize: 15}}>01:25:46</Text>
+          </View>
+          <View style={{paddingTop: 33, paddingLeft: 15}}>
+            <Ionicons name="chevron-forward" size={26} color="#c2c2c2" />
           </View>
         </View>
       </TouchableOpacity>
@@ -87,26 +101,20 @@ export default class DocList extends React.Component {
               name={'chevron-back'}
               size={25}
               color={'white'}
-              onPress={() =>
-                this.props.navigation.navigate('Appointments Screen')
-              }
             />
           </>
         }
         centerComponent={{
-          text: 'Counselors',
-          style: {color: '#fff', paddingTop: 4, fontSize: 18},
+          text: 'Appointments',
+          style: {color: '#fff', fontSize: 18},
         }}
         rightComponent={
           <>
             <AntDesign
               style={{marginLeft: 15, color: '#fff'}}
-              name={'calendar'}
+              name={'user'}
               size={25}
               color={'white'}
-              onPress={() =>
-                this.props.navigation.navigate('Appointments Screen')
-              }
             />
           </>
         }
@@ -127,7 +135,7 @@ export default class DocList extends React.Component {
       <FlatList
         ListHeaderComponent={() => this.header()}
         data={this.state.arrayData}
-        renderItem={(item) => this.docListCompoment(item)}
+        renderItem={(item) => this.appointmentListComp(item)}
         ItemSeparatorComponent={this.renderSeparator}
         keyExtractor={(item) => item.id}
         refreshing={this.state.loading}

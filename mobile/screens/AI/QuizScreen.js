@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {Component} from 'react';
 import {
   StyleSheet,
   Text,
@@ -6,9 +6,10 @@ import {
   Button,
   StatusBar,
   ImageBackground,
-} from "react-native";
+  Image,
+} from 'react-native';
 
-import Quiz from "./Quiz";
+import Quiz from './Quiz';
 
 export default class QuizScreen extends Component {
   state = {
@@ -25,7 +26,7 @@ export default class QuizScreen extends Component {
     return (
       <View style={styles.container}>
         {this.state.isVisible ? (
-          <Quiz />
+          <Quiz navigation={this.props.navigation} />
         ) : (
           <View style={styles.container}>
             <StatusBar barStyle="light-content" />
@@ -42,6 +43,10 @@ export default class QuizScreen extends Component {
             </View>
             <View style={styles.footer}>
               <View style={styles.buttonContainer}>
+                <Image
+                  style={{width: 350, height: 270}}
+                  source={require('../../assets/quiz.png')}
+                />
                 <Button
                   onPress={this.renderComponents}
                   title="Take Test!"
@@ -59,28 +64,25 @@ export default class QuizScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
-    justifyContent: "center",
+    backgroundColor: 'white',
+    justifyContent: 'center',
   },
   header: {
     flex: 1,
   },
   footer: {
-    marginTop: 100,
     flex: 1,
     padding: 20,
   },
   imageBackground: {
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
-    height: "100%",
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
   },
   buttonContainer: {
-    paddingVertical: 10,
-    marginTop: 30,
     borderRadius: 100,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

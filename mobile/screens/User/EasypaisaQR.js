@@ -1,5 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Image, Button, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  Button,
+  ToastAndroid,
+  StyleSheet,
+} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import CheckBox from '@react-native-community/checkbox';
 
@@ -9,24 +16,17 @@ const EasypaisaQR = (props) => {
   const [userEmail, setUseremail] = useState('');
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
 
-  const getUserDate = async () => {
-    const afterParse = JSON.parse(await AsyncStorage.getItem('item'));
-    setUserid(afterParse.userId);
-    setUsername(afterParse.userName);
-    setUseremail(afterParse.userEmail);
-  };
-
-  useEffect(() => {
-    getUserDate();
-  }, []);
-
   const counselorId = props.route.params.counselorId;
   const counselorName = props.route.params.counselorName;
   const counselorImage = props.route.params.counselorImage;
   const counselorEmail = props.route.params.counselorEmail;
   const pakage = props.route.params.pakage;
+  const price = props.route.params.price;
   const date = props.route.params.date;
-  // const afterParse = AsyncStorage.getItem('item');
+
+  useEffect(() => {
+    getUserData();
+  }, []);
 
   const sendCred = async (props) => {
     fetch('http://10.0.2.2:3000/appointment', {
@@ -45,6 +45,7 @@ const EasypaisaQR = (props) => {
         counselorImg: counselorImage,
         date: date,
         pakage: pakage,
+        price: price,
         status: 'pending',
       }),
     })
@@ -52,10 +53,19 @@ const EasypaisaQR = (props) => {
       .then((data) => {
         try {
           console.log(data);
+          ToastAndroid.show('Payment Done Successfully !', ToastAndroid.SHORT);
+          props.navigation.replace('Appointments Screen');
         } catch (e) {
           console.log(e);
         }
       });
+  };
+
+  const getUserData = async () => {
+    const afterParse = JSON.parse(await AsyncStorage.getItem('item'));
+    setUserid(afterParse.userId);
+    setUsername(afterParse.userName);
+    setUseremail(afterParse.userEmail);
   };
 
   return (
@@ -76,18 +86,24 @@ const EasypaisaQR = (props) => {
         />
       </View>
       <View style={{flex: 2, padding: 20}}>
-        <CheckBox
-          disabled={false}
-          value={toggleCheckBox}
-          onValueChange={(newValue) => setToggleCheckBox(newValue)}
+        <View style={{flexDirection: 'row', paddingBottom: 10}}>
+          <CheckBox
+            disabled={false}
+            value={toggleCheckBox}
+            onValueChange={() => setToggleCheckBox(!toggleCheckBox)}
+          />
+          <Text style={{color: '#009999', fontSize: 17, paddingTop: 4}}>
+            Paid Successfully ? Press me
+          </Text>
+        </View>
+        <Button
+          disabled={toggleCheckBox ? false : true}
+          title="Continue"
+          onPress={() => sendCred(props)}
         />
-        <Text style={{color: '#009999', fontSize: 18, paddingVertical: 20}}>
-          Pay through easypaisa and press countinue
-        </Text>
-        <Button title="Continue" onPress={() => sendCred()} />
         <Text style={{color: '#008080', paddingVertical: 20}}>
-          After pressing continue button you appointment will be accepted by our
-          Team in an hour or two.
+          <Text style={{color: 'red'}}>Note: </Text> After pressing continue
+          button you appointment will be accepted by our Team in an hour or two.
         </Text>
       </View>
     </View>

@@ -30,6 +30,7 @@ const mainSubscribersResolution = {width: 1280, height: 720};
 const secondarySubscribersResolution = {width: 352, height: 288};
 
 class VideoChat extends Component {
+  
   constructor(props) {
     super(props);
     this.apiKey = credentials.API_KEY;
@@ -43,6 +44,7 @@ class VideoChat extends Component {
       streamProperties: {}, // Handle individual stream properties,
       mainSubscriberStreamId: null,
     };
+    
     this.sessionEventHandlers = {
       streamCreated: (event) => {
         const streamProperties = {

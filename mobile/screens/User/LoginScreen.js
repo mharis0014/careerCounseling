@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import {useDispatch} from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
+import {Alert} from 'react-native';
 
 const LoginScreen = (props) => {
   const dispatch = useDispatch();
@@ -38,20 +39,15 @@ const LoginScreen = (props) => {
             userEmail: data[2],
             token: data[3],
           };
-
-          
-
           await AsyncStorage.setItem('item', JSON.stringify(items));
-          // const userData = AsyncStorage.getItem('item');
-          // const afterParse = JSON.parse(await AsyncStorage.getItem('item'));
-          // const userEmail = afterParse.userEmail;
-          // const userName = afterParse.userName;
-          // const userId = afterParse.userId;
-
           dispatch({type: 'server/join', data: 'u_' + email}); //Without Check else will not work
           global.c_user = email;
-          props.navigation.replace('Home Screen');
-          ToastAndroid.show('Logged in successfully !', ToastAndroid.SHORT);
+          if (data[3] !== undefined) {
+            props.navigation.replace('Home Screen');
+            ToastAndroid.show('Logged in successfully !', ToastAndroid.SHORT);
+          } else {
+            Alert.alert('Login Failed', "Enter valid credentials");
+          }
         } catch (e) {
           console.log(e);
         }

@@ -13,6 +13,7 @@ function PayOptScreen(props) {
     const counselorImage = props.route.params.counselorImage;
     const counselorEmail = props.route.params.counselorEmail;
   const pakage = props.route.params.pakage;
+  const price = props.route.params.price;
   const date = props.route.params.date;
 
   const toggleModal = () => {
@@ -46,6 +47,7 @@ function PayOptScreen(props) {
                   'counselorName': counselorName,
                   'counselorEmail': counselorEmail,
                   'pakage': pakage,
+                  'price' : price,
                   'date': date,
                 })
               }
@@ -60,7 +62,7 @@ function PayOptScreen(props) {
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.card, {backgroundColor: '#3b7bbf'}]}
-              onPress={() => porps.navigation.navigate('pay')}>
+              onPress={() => props.navigation.navigate('Stripe Payment')}>
               <Iconz name="stripe" size={38} color="#fff" />
               <View style={{paddingLeft: 10}}>
                 <Text style={styles.textBold}>STRIPE</Text>

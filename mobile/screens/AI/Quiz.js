@@ -3,12 +3,13 @@ import {
   Text,
   View,
   StyleSheet,
-  Button,
-  StatusBar,
-  ImageBackground,
   TouchableOpacity,
   SafeAreaView,
   FlatList,
+  StatusBar,
+  Image,
+  ImageBackground,
+  Button,
 } from 'react-native';
 import {Icon} from 'react-native-elements';
 
@@ -20,6 +21,7 @@ const Quiz = (props) => {
   const [quizScreen, setQuizScreen] = useState(true);
   const [getDisabled, setDislabled] = useState(true);
   const [ansArray, setAnsArray] = useState([]);
+
   const renderItem = ({item}) => (
     <Item label={item.label} name={item.name} option={item.option} />
   );
@@ -64,10 +66,8 @@ const Quiz = (props) => {
               name={'navigate-next'}
               type="material"
               color="#64e764"
-              onPress={() => {
-                setQuizScreen(false);
-                console.log({ansArray});
-              }}
+              
+              onPress={() => setQuizScreen(false)}
             />
           </View>
         </View>
@@ -84,11 +84,25 @@ const Quiz = (props) => {
               <Text style={{color: 'yellow'}}>
                 Click button to See Full Summary Report of your career!
               </Text>
+              <View style={{marginTop: 40}}>
+                <Button
+                  onPress={() =>
+                    props.navigation.navigate('Report Screen', {
+                      ansArr: ansArray,
+                    })
+                  }
+                  title="See Report!"
+                  color="#c935c3"
+                />
+              </View>
             </ImageBackground>
           </View>
           <View style={styles.resultFooter}>
             <View style={styles.resultBtnContainer}>
-              <Button title="See Report!" color="#93278f" />
+              <Image
+                style={{width: 380, height: 380}}
+                source={require('../../assets/careerprogresspng.png')}
+              />
             </View>
           </View>
         </View>
@@ -161,13 +175,11 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   resultFooter: {
-    marginTop: 100,
     flex: 1,
     padding: 20,
   },
   resultBtnContainer: {
     paddingVertical: 10,
-    marginTop: 30,
     borderRadius: 100,
     alignItems: 'center',
     justifyContent: 'center',

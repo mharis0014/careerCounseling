@@ -7,15 +7,13 @@ import DateTimePicker from 'react-native-modal-datetime-picker';
 
 const ProfileCardScreen = (props) => {
   const [isVisible, setVisible] = useState(false);
-  const [notBooked, booked] = useState('Book an Appointment');
-  const [btnColor, setBtnColor] = useState('#64e764');
 
   const usersOnline = useSelector((state) => state.usersOnline);
   const name1 = props.route.params.name;
-  const email1 = props.route.params.email
+  const email1 = props.route.params.email;
   const img1 = props.route.params.imageData;
   const id = props.route.params.id;
-
+  
   const showPicker = () => {
     setVisible(true);
   };
@@ -25,22 +23,14 @@ const ProfileCardScreen = (props) => {
   };
 
   const handlePicker = (date) => {
-
-    
     props.navigation.navigate('Pricing Screen', {
-      'counselorImage': img1,
-      'counselorId': id,
-      'counselorName': name1,
-      'counselorEmail': email1,
-      'date': date.toString(),
+      counselorImage: img1,
+      counselorId: id,
+      counselorName: name1,
+      counselorEmail: email1,
+      date: date.toString(),
     });
-    console.log("A date has been picked: " + date);
-    console.log('An id has been picked: ' + id);
-    
-    
     hidePicker();
-    booked('Appointment Booked Successfully!');
-    setBtnColor('#aef2ae');
   };
 
   return (
@@ -52,7 +42,7 @@ const ProfileCardScreen = (props) => {
         }}
       />
       <View style={styles.btnContainer}>
-        <TouchableOpacity onPress={() => props.navigation.navigate('Popup')}
+        <TouchableOpacity
           style={[styles.customBtn, {backgroundColor: '#eda1bf'}]}>
           <Icon name="phone" size={16} color="#fff" />
           <Text style={styles.btntxt}>Voice Call</Text>
@@ -92,17 +82,21 @@ const ProfileCardScreen = (props) => {
             const allusers = JSON.parse(JSON.stringify(usersOnline));
             global.consolerchatid = '1234';
             for (var i = 0; i < allusers.length; ++i) {
+              console.log('allusers ' + allusers[i].username);
+              console.log('users ' + email1);
+
               if (
-                'c_' + name1.toLowerCase().trim() ===
+                'c_' + email1.toLowerCase().trim() ===
                 allusers[i].username.toLowerCase().trim()
               ) {
                 global.consolerchatid = allusers[i].userId;
               }
             }
-            console.log(global.consolerchatid);
+            console.log('Chat id is: ' + global.consolerchatid);
             props.navigation.navigate('Chat Screen', {
               img: img1,
               name: name1,
+              counselorId: id,
               userId: global.consolerchatid,
             });
           }}
@@ -142,10 +136,10 @@ const ProfileCardScreen = (props) => {
           <Text style={{fontWeight: 'bold', fontSize: 18}}>2.05K</Text>
         </View>
       </View>
-      <TouchableOpacity
-        onPress={showPicker}
-        style={[styles.btn, {backgroundColor: btnColor}]}>
-        <Text style={{alignSelf: 'center', color: '#fff'}}>{notBooked}</Text>
+      <TouchableOpacity onPress={showPicker} style={styles.btn}>
+        <Text style={{alignSelf: 'center', color: '#fff'}}>
+          Book an Appointment
+        </Text>
       </TouchableOpacity>
       <DateTimePicker
         isVisible={isVisible}
@@ -191,6 +185,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 14,
     marginHorizontal: 38,
+    backgroundColor: '#64e764',
   },
 });
 

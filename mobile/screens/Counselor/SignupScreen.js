@@ -26,7 +26,10 @@ export default class SignupScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fileList: require('../../assets/doci.png'),
+      fileList: {
+        contentType: '',
+        data: require('../../assets/doci.png'),
+      },
       pic: require('../../assets/doci.png'),
       name: '',
       email: '',
@@ -140,7 +143,7 @@ export default class SignupScreen extends Component {
           'medium strength. use special characters for a strong password',
       });
     } else {
-      passErr({passErr: ''});
+      this.setState({passErr: ''});
     }
   };
 
@@ -157,6 +160,7 @@ export default class SignupScreen extends Component {
         education: this.state.education,
         about: this.state.about,
         password: this.state.password,
+        status: 'requested',
       }),
     })
       .then((res) => res.json())

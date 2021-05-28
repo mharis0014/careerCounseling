@@ -87,6 +87,7 @@ const SignupScreen = (props) => {
       .then(async (data) => {
         try {
           console.log(data.token);
+          console.log(password);
           if (nameValid && emailValid && medium) {
             await AsyncStorage.setItem('token', data.token);
             props.navigation.replace('User Login Screen');

@@ -15,12 +15,17 @@ import UserLogin from '../screens/User/LoginScreen';
 import UserSignup from '../screens/User/SignupScreen';
 import UserHome from '../screens/User/HomeScreen';
 import DocList from '../screens/User/DocListScreen';
+import Appointments from '../screens/User/Appointments';
 import ProfileCard from '../screens/User/ProfileCardScreen';
 import Pricing from '../screens/User/PricingScreen';
+import Ratings from '../screens/User/RateScreen';
 import PaymentOption from '../screens/User/PayOptScreen';
+import EasypaisaQR from '../screens/User/EasypaisaQR';
+import StripePay from '../screens/User/StripePay';
 import UserChat from '../screens/User/ChatScreen';
 
 import QuizScreen from '../screens/AI/QuizScreen';
+import Report from '../screens/AI/Report';
 import Popup from '../components/Popup';
 
 import CounselorLogin from '../screens/Counselor/LoginScreen';
@@ -58,10 +63,14 @@ const UserStackPaid = () => {
       }}
       initialRouteName="Doc List Screen">
       <Stack.Screen name="Doc List Screen" component={DocList} />
+      <Stack.Screen name="Appointments Screen" component={Appointments} />
       <Stack.Screen name="Profile Card" component={ProfileCard} />
       <Stack.Screen name="Popup" component={Popup} />
       <Stack.Screen name="Pricing Screen" component={Pricing} />
+      <Stack.Screen name="Ratings Screen" component={Ratings} />
       <Stack.Screen name="Payment Opt Screen" component={PaymentOption} />
+      <Stack.Screen name="ScanQR Screen" component={EasypaisaQR} />
+      <Stack.Screen name="Stripe Payment" component={StripePay} />
       <Stack.Screen name="Chat Screen" component={UserChat} />
       <Stack.Screen name="Videochat" component={VideoChat} />
     </Stack.Navigator>
@@ -76,6 +85,7 @@ const UserStackFree = () => {
       }}
       initialRouteName="Quiz Screen">
       <Stack.Screen name="Quiz Screen" component={QuizScreen} />
+      <Stack.Screen name="Report Screen" component={Report} />
     </Stack.Navigator>
   );
 };
@@ -99,7 +109,7 @@ const CounselorStack = () => {
 };
 
 const Navigation = (props) => {
-  const socket = io('http://192.168.18.3:3000');
+  const socket = io('http://192.168.43.203:3000');
   const socketIoMiddleware = createSocketIoMiddleware(socket, 'server/');
 
   function reducer(state = {conversations: {}}, action) {

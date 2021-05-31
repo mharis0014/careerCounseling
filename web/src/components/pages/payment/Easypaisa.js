@@ -27,7 +27,7 @@ const Easypaisa = (props) => {
           counselorEmail: props.data.email,
           counselorName: props.data.name,
           counselorId: props.data.id,
-          counselorImg : props.data.imageData,
+          counselorImg: props.data.imageData,
           date: props.data.date,
           pakage: props.data.pakage,
           price: props.data.price,
@@ -36,6 +36,7 @@ const Easypaisa = (props) => {
       });
       const resp = await response.json();
       console.log(resp);
+      history.push("payment-success");
     } catch (e) {
       console.log(e);
     }
@@ -88,14 +89,11 @@ const Easypaisa = (props) => {
           alignItems: "center",
           justifyContent: "center",
         }}
-        onClick={() => (checked ? paymentDone() : null)}
+        onClick={() =>
+          checked ? paymentDone() : console.log("click on checkbox first")
+        }
       >
         <h4
-          onClick={() =>
-            checked
-              ? history.push("/payment-success")
-              : console.log("check radio button")
-          }
           style={{
             color: "white",
             fontWeight: "bold",

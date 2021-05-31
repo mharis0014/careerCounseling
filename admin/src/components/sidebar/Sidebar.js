@@ -20,7 +20,7 @@ const Sidebar = ({ sidebarOpen, closeSidebar }) => {
       <div className="sidebar__menu">
         <div className="sidebar__link active_menu_link">
           <i className="fa fa-home"></i>
-          <a href="/">Dashboard</a>
+          <a href="/dashboard">Dashboard</a>
         </div>
         <h2>MNG</h2>
         <div className="sidebar__link">

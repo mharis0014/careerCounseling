@@ -14,7 +14,10 @@ function Booking(props) {
   const data = location.data;
 
   const selectPkgBtn = () => {
-    data.date = dateTime;
+    // const datetime = dateTime.toDateString();
+    console.log(dateTime);
+    data['date'] = dateTime;
+    console.log(data);
     props.history.push({
       pathname: "/payment-options",
       data: data,
@@ -25,9 +28,10 @@ function Booking(props) {
     setDateTime(date);
     setVisible(true);
   };
+
   return (
     <div
-      onClick={() => console.log(data)}
+      onClick={() => console.log(location.data)}
       style={{
         backgroundColor: "#1c2237",
         width: "100%",
@@ -72,7 +76,7 @@ function Booking(props) {
           <input
             style={{ width: 250, height: 30, marginRight: 10 }}
             type="text"
-            name="name"
+            name="dateTime"
             value={dateTime}
           />
           {visible ? (

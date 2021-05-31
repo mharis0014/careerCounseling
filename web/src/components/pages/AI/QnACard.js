@@ -7,6 +7,7 @@ import Img1 from "../../../assets/svg-1.svg";
 import Img2 from "../../../assets/svg-2.svg";
 import Img3 from "../../../assets/svg-3.svg";
 import Rep from "../../../data/report";
+import Recommendation from "./Recommendation";
 
 function QnACard() {
   const [q_no, setq_no] = useState(0);
@@ -16,9 +17,10 @@ function QnACard() {
   const [comp, setComp] = useState(true);
   const [note, setNote] = useState(false);
   const [personality, setPersonality] = useState("");
+  const [labels, setLabels] = useState([]);
+  const [interests, setInterests] = useState([]);
 
   async function sendCred() {
-    console.log("---------1----------");
     await fetch("http://localhost:5000", {
       method: "POST",
       headers: {
@@ -31,10 +33,7 @@ function QnACard() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("---------2----------");
         setPersonality(data);
-        console.log("---------3----------");
-        console.log(data);
         setLoading(true);
         setComp(false);
         career(data);
@@ -73,16 +72,8 @@ function QnACard() {
 
   var p1, p2, p3, p4, p5, c1, c2, c3;
 
-  // var f1 = "Ammar",
-  //   f2 = "Haris",
-  //   f3 = "Ali";
-
-  const test = () => {
-    console.log("C1: " + c1, c2, c3);
-  };
-
   const careerData = {
-    labels: [c1, c2, c3],
+    labels: labels,
     datasets: [
       {
         data: [3, 2, 1],
@@ -97,7 +88,7 @@ function QnACard() {
   };
 
   const intrestsData = {
-    labels: [p1, p2, p3, p4, p5],
+    labels: interests,
     datasets: [
       {
         data: [3, 2, 2, 1, 5],
@@ -128,39 +119,25 @@ function QnACard() {
   };
 
   const career = (data) => {
-    console.log("career func called!!!!!!!!!!!!!");
     for (var i = 0; i < Rep.length; i++) {
       if (data.cluster === Rep[i].index) {
-        console.log("Career 1: " + Rep[i].careers[0]);
-        console.log("Career 2: " + Rep[i].careers[1]);
-        console.log("Career 3: " + Rep[i].careers[2]);
         c1 = Rep[i].careers[0];
         c2 = Rep[i].careers[1];
         c3 = Rep[i].careers[2];
-      } else {
-        console.log("no fuck you 1");
+        setLabels([...labels, c1, c2, c3]);
       }
-      test();
     }
   };
 
   const personaltits = (data) => {
-    console.log("personal tits func called!!!!!!!!!!!!!");
     for (var i = 0; i < Rep.length; i++) {
-      console.log("Cluster !!!!!!!!!!!!!!!!!!!: " + data.cluster);
       if (data.cluster === Rep[i].index) {
-        console.log("personality 1: " + Rep[i].personalities[0]);
-        console.log("personality 2: " + Rep[i].personalities[1]);
-        console.log("personality 3: " + Rep[i].personalities[2]);
-        console.log("personality 4: " + Rep[i].personalities[3]);
-        console.log("personality 5: " + Rep[i].personalities[4]);
         p1 = Rep[i].personalities[0];
         p2 = Rep[i].personalities[1];
         p3 = Rep[i].personalities[2];
         p4 = Rep[i].personalities[3];
         p5 = Rep[i].personalities[4];
-      } else {
-        console.log("no fuck you 2");
+        setInterests([...interests, p1, p2, p3, p4, p5]);
       }
     }
   };
@@ -289,7 +266,7 @@ function QnACard() {
     </div>
   ) : //  ------------------------------------------------RESULT-----------------------------------------------------
   isLoading ? (
-    <div style={{ width: "100%", height: 1500 }}>
+    <div style={{ width: "100%", height: 2250 }}>
       <div
         style={{
           width: "100%",
@@ -297,10 +274,9 @@ function QnACard() {
           display: "flex",
           flexDirection: "row",
           justifyContent: "space-around",
-          backgroundColor: "#f7f7f7",
+          backgroundColor: "#fff",
         }}
       >
-        {/* <p>RESULT: {ansArray.toString(10).split("")}</p> */}
         <div
           style={{
             display: "flex",
@@ -362,7 +338,6 @@ function QnACard() {
           backgroundColor: "#f7f7f7",
         }}
       >
-        {/* <p>RESULT: {ansArray.toString(10).split("")}</p> */}
         <div
           style={{
             display: "flex",
@@ -381,6 +356,15 @@ function QnACard() {
         <div style={{ width: 570, height: 500, padding: 30 }}>
           <Line data={intrestsData} options={options} />
         </div>
+      </div>
+      <div
+        style={{
+          width: "100%",
+          height: 500,
+          backgroundColor: "#f7f7f7",
+        }}
+      >
+        <Recommendation />
       </div>
     </div>
   ) : (

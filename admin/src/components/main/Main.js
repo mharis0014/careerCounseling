@@ -48,7 +48,6 @@ const Main = () => {
         "http://localhost:3001/getAppointments/confirmed"
       );
       const data = await response.json();
-
       var totalSum = 0;
       for (var i = 0; i < data.length; i++) {
         var sliced = data[i].price.slice(1);
@@ -175,7 +174,7 @@ const Main = () => {
               </div>
               <div className="card2">
                 <h1>Counselors</h1>
-                <p>{requestedCounselors}</p>
+                <p>{requestedCounselors.length}</p>
               </div>
               <div className="card3">
                 <h1>Free Users</h1>

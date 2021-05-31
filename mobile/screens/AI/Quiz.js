@@ -9,8 +9,10 @@ import {
   StatusBar,
   Image,
   ImageBackground,
-  Button,
+  Button
 } from 'react-native';
+
+import {ProgressBar} from '@react-native-community/progress-bar-android';
 import {Icon} from 'react-native-elements';
 
 import Questions from '../../data/questions';
@@ -45,7 +47,12 @@ const Quiz = (props) => {
       {quizScreen ? (
         <View style={styles.screen}>
           <View style={styles.header}>
-            <Text>Question: {q_no + 1}/50</Text>
+            <Text style={{paddingBottom: 5}}>Question: {q_no + 1}/50</Text>
+          <ProgressBar
+            styleAttr="Horizontal"
+            indeterminate={false}
+            progress={(q_no + 1) / 50}
+          />
           </View>
           <View style={styles.mcqContainer}>
             <View style={styles.question}>
@@ -66,7 +73,6 @@ const Quiz = (props) => {
               name={'navigate-next'}
               type="material"
               color="#64e764"
-              
               onPress={() => setQuizScreen(false)}
             />
           </View>

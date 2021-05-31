@@ -16,7 +16,7 @@ const Payments = () => {
   }, []);
 
   async function loadSpecificCounselorPayments() {
-    const cData = localStorage.getItem("item");
+    const cData = localStorage.getItem("citem");
     const afterParse = JSON.parse(cData);
     const counselorId = afterParse.counselorId;
     try {

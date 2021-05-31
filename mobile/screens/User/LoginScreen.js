@@ -20,7 +20,7 @@ const LoginScreen = (props) => {
   const [password, setPassword] = useState('');
 
   const userCred = async (props) => {
-    fetch('http://10.0.2.2:3000/userSignin', {
+    fetch('http://10.0.2.2:3001/userSignin', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -3,9 +3,9 @@ export const homeObjOne = {
   lightText: true,
   lightTextDesc: true,
   topLine: "SIGN UP TODAY",
-  headline: "Join today to receive an exclusive offer",
+  headline: "Join today to access our Career Counseling Services",
   description:
-    "Get access to our exclusive diamond card that allows you to  send unlimited transactions without getting charged any fees",
+    "Get access to best career counselors online and free career counseling assessment test which finds you a career by prediction you personality.",
   buttonLabel: "Sign Up",
   imgStart: "",
   img: "images/svg-login.svg",
@@ -17,10 +17,10 @@ export const homeObjTwo = {
   lightBg: false,
   lightText: true,
   lightTextDesc: true,
-  topLine: "100% SECURE",
-  headline: "Stay protected 24/7 anywhere anytime",
+  topLine: "24/7 AVAILABILITY",
+  headline: "Get counseling services 24/7 anywhere anytime",
   description:
-    "We have you covered no matter where you are located. Over 140 locations worldwide to ensure you have access anytime",
+    "We have you covered no matter where you are located. Over 140 locations in Pakistan to ensure you have access anytime",
   buttonLabel: "Learn More",
   imgStart: "",
   img: "images/svg-5.svg",
@@ -32,13 +32,13 @@ export const homeObjThree = {
   lightBg: true,
   lightText: false,
   lightTextDesc: false,
-  topLine: "EASY SETUP",
-  headline: "Super fast and simple onboarding process",
+  topLine: "24/7 AVAILABILITY",
+  headline: "Get counseling services 24/7 anywhere anytime",
   description:
-    "Get everything set up and ready in under 10 minutes. All you need to do is add your information and you're ready to go.",
+    "We have you covered no matter where you are located. Over 140 locations in Pakistan to ensure you have access anytime",
   buttonLabel: "Start Now",
   imgStart: "start",
-  img: "images/svg-7.svg",
+  img: "images/svg-33.svg",
   alt: "Vault",
 };
 

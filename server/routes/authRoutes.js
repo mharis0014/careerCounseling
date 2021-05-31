@@ -96,10 +96,14 @@ router.get("/getPayments/confirmed", function (req, res) {
 });
 
 router.get("/getSpecificCounselorPayment/:counselorId", function (req, res) {
+  console.log(
+    "I have reche specific counselor route to get appointments of that counselor"
+  );
   Appointment.find(
     { counselorId: req.params.counselorId.toString(), status: "confirmed" },
     function (err, doc) {
       if (err) return next(err);
+      console.log(doc);
       var newInfo = [];
       var newDoc = {
         userName: "",
@@ -148,7 +152,7 @@ router.post("/userSignup", async (req, res) => {
 });
 
 router.post("/savetoken", async (req, res) => {
-  console.log("req received");
+  console.log("save token request received");
   const API_KEY = "47167814";
   const API_SECRET = "94e58ac16e2d3efd4a544e2431645f169a8aca2f";
   var opentok = new OpenTok(API_KEY, API_SECRET);
@@ -175,6 +179,25 @@ router.post("/savetoken", async (req, res) => {
     }
   });
 });
+
+router.put("/updateAppointment/:id", async (req, res) => {
+  console.log("I am in update route");
+  const id = req.params.id;
+  console.log(id);
+  await Appointment.updateOne({ _id: id }, req.body);
+  res.send({ Confirmation: "Record Updated" });
+});
+
+router.put("/updateCounselor/:id", async (req, res) => {
+  console.log("I am in update counselor route");
+  const id = req.params.id;
+  console.log(req.body);
+  console.log(id);
+
+  await Counselor.updateOne({ _id: id }, req.body);
+  res.send({ Confirmation: "Record Updated" });
+});
+
 router.get("/getallusers_videoid", async (req, res) => {
   console.log(JSON.stringify(allusers_video));
 
@@ -186,8 +209,6 @@ router.post("/updatechatid", async (req, res) => {
   try {
     await User.update({ email: email }, { $set: { chatid: chatid } });
   } catch (err) {
-    console.log(err);
-    console.log("Catch");
     return res.send(err);
   }
 });
@@ -234,7 +255,7 @@ router.get("/getCounselorData/requested", function (req, res) {
 });
 
 router.get("/auth", auth, async (req, res) => {
-  console.log("simple auth has been called");
+  //console.log("simple auth has been called");
   res.send(true);
 });
 
@@ -273,12 +294,10 @@ router.get("/getCounselorData/confirmed", function (req, res) {
 });
 
 router.get("/getSpecificCounselorFeedback/:counselorId", function (req, res) {
-  Counselor.find({ _id: req.params.counselorId }, function (err, counselor) {
+  Counselor.findOne({ _id: req.params.counselorId }, function (err, counselor) {
     console.log("Getting Specific Counselor Rating and feedback");
     if (err) return next(err);
-
     res.send(counselor);
-
     console.log("Specific Counselor rating and feedback Sent");
   });
 });
@@ -307,24 +326,14 @@ router.get("/getUserData", function (req, res) {
 });
 
 router.get("/getCounselorData/:counselorId", function (req, res) {
-  console.log(" i am in coulselor info route");
-  Counselor.find({ _id: req.params.counselorId }, function (err, counselor) {
-    var newInfo = [];
+  console.log(" i am in coulselor sidebar info route");
+  Counselor.findOne({ _id: req.params.counselorId }, function (err, counselor) {
     var newCounselor = {
-      name: "",
-      email: "",
-      imageData: "",
+      name: counselor.name,
+      email: counselor.email,
+      counselorImage: counselor.fileList.data + "".toString("ascii"),
     };
-
-    for (i = 0; i < counselor.length; i++) {
-      newCounselor = {
-        name: counselor[i].name,
-        email: counselor[i].email,
-        counselorImage: counselor[i].fileList.data + "".toString("ascii"),
-      };
-      newInfo[i] = newCounselor;
-    }
-    res.send(newInfo);
+    res.send(newCounselor);
   });
 });
 
@@ -426,6 +435,7 @@ router.get("/getAppointments/pending", function (req, res) {
       counselorImage: "",
       date: "",
       pakage: "",
+      price: '',
       status: "",
     };
 
@@ -441,6 +451,7 @@ router.get("/getAppointments/pending", function (req, res) {
         counselorImage: doc[i].counselorImage.data + "".toString("ascii"),
         date: doc[i].date,
         pakage: doc[i].pakage,
+        price: doc[i].price,
         status: doc[i].status,
       };
       newInfo[i] = newDoc;
@@ -566,6 +577,37 @@ router.post("/appointment", async (req, res) => {
   }
 });
 
+router.get("/getRecomended", function (req, res) {
+  console.log("counselor recommendation request received");
+  Counselor.find({}, function (err, counselor) {
+    if (err) return next(err);
+    var responseArr = [];
+    var recomendationsArr = {};
+    for (var i = 0; i < counselor.length; i++) {
+      if (counselor[i].ratingAndFeedback.length > 0) {
+        var total = 0;
+        for (var j = 0; j < counselor[i].ratingAndFeedback.length; j++) {
+          var num = counselor[i].ratingAndFeedback[j].ratingIndex;
+          var num2 = parseInt(num);
+          total = Math.round((total + num2) / ++j);
+        }
+        recomendationsArr["ratingIndex"] = total;
+        total = 0;
+      } else {
+        recomendationsArr["ratingIndex"] = "Not Rated Yet";
+      }
+      recomendationsArr["counselorName"] = counselor[i].name;
+      recomendationsArr["counselorEmail"] = counselor[i].email;
+      recomendationsArr["counselorImage"] =
+        counselor[i].fileList.data + "".toString("ascii");
+      responseArr.push(recomendationsArr);
+      recomendationsArr = {};
+    }
+    res.send(responseArr);
+    console.log("Confirmed Appointments Sent");
+  });
+});
+
 router.delete("/deleteAppointment:id", function (req, res) {
   console.log("Delete Appointment Request Received");
   const id = req.params.id;
@@ -631,7 +673,7 @@ router.put("/ratings/:counselorId", async (req, res) => {
 });
 
 router.post("/counselorSignin", async (req, res) => {
-  console.log("I am in Counselor signin ROute");
+  console.log("I am in counselor Sign in route. Whats up!");
   const { email, password } = req.body;
   if (!email || !password) {
     return res.status(422).send({ error: "must provide email and password1" });

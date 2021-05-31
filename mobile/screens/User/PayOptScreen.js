@@ -42,13 +42,13 @@ function PayOptScreen(props) {
             <TouchableOpacity
               onPress={() =>
                 props.navigation.navigate('ScanQR Screen', {
-                  'counselorImage': counselorImage,
-                  'counselorId': counselorId,
-                  'counselorName': counselorName,
-                  'counselorEmail': counselorEmail,
-                  'pakage': pakage,
-                  'price' : price,
-                  'date': date,
+                  counselorImage: counselorImage,
+                  counselorId: counselorId,
+                  counselorName: counselorName,
+                  counselorEmail: counselorEmail,
+                  pakage: pakage,
+                  price: price,
+                  date: date,
                 })
               }
               style={[styles.card, {backgroundColor: '#99cc00'}]}>
@@ -62,7 +62,17 @@ function PayOptScreen(props) {
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.card, {backgroundColor: '#3b7bbf'}]}
-              onPress={() => props.navigation.navigate('Stripe Payment')}>
+              onPress={() =>
+                props.navigation.navigate('Stripe Payment', {
+                  counselorImage: counselorImage,
+                  counselorId: counselorId,
+                  counselorName: counselorName,
+                  counselorEmail: counselorEmail,
+                  pakage: pakage,
+                  price: price,
+                  date: date,
+                })
+              }>
               <Iconz name="stripe" size={38} color="#fff" />
               <View style={{paddingLeft: 10}}>
                 <Text style={styles.textBold}>STRIPE</Text>

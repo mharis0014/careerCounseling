@@ -22,7 +22,7 @@ const Main = () => {
   }, []);
 
   async function loadAppointments() {
-    const cData = localStorage.getItem("item");
+    const cData = localStorage.getItem("citem");
     const afterParse = JSON.parse(cData);
     const counselorId = afterParse.counselorId;
     try {
@@ -46,7 +46,7 @@ const Main = () => {
   }
 
   async function loadClients() {
-    const cData = localStorage.getItem("item");
+    const cData = localStorage.getItem("citem");
     const afterParse = JSON.parse(cData);
     const counselorId = afterParse.counselorId;
     try {

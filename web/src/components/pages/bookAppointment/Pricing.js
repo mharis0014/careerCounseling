@@ -11,17 +11,13 @@ function Pricing(props) {
   const location = useLocation();
   const history = useHistory();
   const data = location.data;
-  // const counselorId = location.state.counselorId;
-  // const counselorName = location.state.name;
-  // const counselorEmail = location.state.email;
-  // const counselorImage = location.state.image;
 
   const selectPkgBtn = (e) => {
     data.pakage = e.pakage;
     data.price = e.price;
     props.history.push({
       pathname: "/book-appointment",
-      data: data
+      data: data,
     });
     console.log(e.package);
     console.log(e.price);
@@ -29,10 +25,7 @@ function Pricing(props) {
 
   return (
     <IconContext.Provider value={{ color: "#fff", size: 64 }}>
-      <div
-        onClick={() => console.log(data)}
-        className="pricing__section"
-      >
+      <div onClick={() => console.log(data)} className="pricing__section">
         <div className="pricing__wrapper">
           <h1 className="pricing__heading">Pricing</h1>
           <div className="pricing__container">
@@ -62,7 +55,7 @@ function Pricing(props) {
                 </Button>
               </div>
             </div>
-            <Link
+            <div
               onClick={() =>
                 selectPkgBtn({ pakage: "Standard", price: "$14.99" })
               }
@@ -85,8 +78,8 @@ function Pricing(props) {
                   Choose Plan
                 </Button>
               </div>
-            </Link>
-            <Link
+            </div>
+            <div
               onClick={() =>
                 selectPkgBtn({ pakage: "Premium", price: "$29.99" })
               }
@@ -109,7 +102,7 @@ function Pricing(props) {
                   Choose Plan
                 </Button>
               </div>
-            </Link>
+            </div>
           </div>
         </div>
       </div>

@@ -28,73 +28,68 @@ const Sidebar = () => {
   const handlePass = (e) => {
     setPass(e.target.value);
   };
-  
-  const userLoginCred = async (props) => {
-     fetch("http://localhost:3001/userSignin", {
-       method: "POST",
-       headers: {
-         "Content-Type": "application/json",
-       },
-       body: JSON.stringify({
-         email: email,
-         password: password,
-       }),
-     })
-       .then((res) => res.json())
-       .then(async (data) => {
-         try {
-           console.log(data[3]);
-           var items = {
-             userId: data[0],
-             userName: data[1],
-             userEmail: data[2],
-             token: data[3],
-           };
 
-           if (data[3] === undefined) {
-             history.push("/login");
-           } else {
-             localStorage.setItem("item", JSON.stringify(items));
-             history.push("/");
-             window.location.reload();
-           }
-         } catch (e) {
-           console.log(e);
-         }
-       });
+  const userLoginCred = async (props) => {
+    fetch("http://localhost:3001/userSignin", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+    })
+      .then((res) => res.json())
+      .then(async (data) => {
+        try {
+          console.log(data[3]);
+          var items = {
+            userId: data[0],
+            userName: data[1],
+            userEmail: data[2],
+            token: data[3],
+          };
+
+          if (data[3] === undefined) {
+            history.push("/login");
+          } else {
+            localStorage.setItem("item", JSON.stringify(items));
+            history.push("/");
+            window.location.reload();
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      });
   };
 
   const userSignupCred = async () => {
-      fetch("http://localhost:3001/userSignup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: name,
-          email: mail,
-          password: pass,
-        }),
-      })
-        .then((res) => res.json())
-        .then(async (data) => {
-          try {
-            console.log(data);
-        
-
-            if (data === undefined) {
-              history.push('/login');
-            } else {
-              setToggle(!toggle);
-            }
-           
-          } catch (e) {
-            // saving error
-            console.log(e);
-            // Alert(e);
+    fetch("http://localhost:3001/userSignup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: name,
+        email: mail,
+        password: pass,
+      }),
+    })
+      .then((res) => res.json())
+      .then(async (data) => {
+        try {
+          console.log(data);
+          if (data === undefined) {
+            history.push("/login");
+          } else {
+            setToggle(!toggle);
           }
-        });
-     };
+        } catch (e) {
+          console.log(e);
+        }
+      });
+  };
 
   const handleUserSignup = (e) => {
     e.preventDefault();
@@ -126,7 +121,7 @@ const Sidebar = () => {
           type="password"
           placeholder="Password"
         />
-        <button>Sign Up</button>
+        <button>Sign In</button>
       </Form>
       <div>
         <Terms>

@@ -34,7 +34,7 @@ export default class Appointments extends React.Component {
 
   fetchData(userId) {
     this.setState({loading: true});
-    fetch('http://10.0.2.2:3000/getUserAppointments/' + userId)
+    fetch('http://10.0.2.2:3001/getUserAppointments/' + userId)
       .then((res) => res.json())
       .then((resJson) => {
         console.log(resJson[0].status);

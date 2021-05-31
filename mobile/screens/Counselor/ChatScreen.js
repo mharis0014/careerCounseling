@@ -12,12 +12,10 @@ import {useDispatch, useSelector} from 'react-redux';
 import {Header, Avatar, Icon} from 'react-native-elements';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Popup from '../../components/Popup';
 import Dialog, {
   DialogButton,
   DialogContent,
   DialogFooter,
-  DialogTitle,
   SlideAnimation,
 } from 'react-native-popup-dialog';
 
@@ -39,7 +37,7 @@ export default function ChatScreen(props) {
     console.log('Length is ' + messages_main.length);
     if (message_new === 'Video Chat Started' && !global.call) {
       console.log('Reached here Video');
-      fetch('http://10.0.2.2:3000/getallusers_videoid')
+      fetch('http://10.0.2.2:3001/getallusers_videoid')
         .then((res) => res.json())
         .then((resJson) => {
           console.log('Get all users is ' + props.route.params.name);
@@ -66,7 +64,7 @@ export default function ChatScreen(props) {
         .catch((e) => console.log(e));
     } else if (message_new === 'Audio Chat Started' && !global.call) {
       console.log('Reached here Video');
-      fetch('http://10.0.2.2:3000/getallusers_videoid')
+      fetch('http://10.0.2.2:3001/getallusers_videoid')
         .then((res) => res.json())
         .then((resJson) => {
           console.log('Get all users is ' + props.route.params.name);
@@ -240,9 +238,9 @@ export default function ChatScreen(props) {
                   });
                   setVisible(false);
                   if (checkmessage === 'Audio Chat Started') {
-                    props.navigation.navigate('Videochat', {value: 'video'});
-                  } else {
                     props.navigation.navigate('Videochat', {value: 'audio'});
+                  } else {
+                    props.navigation.navigate('Videochat', {value: 'video'});
                   }
                 }}
               />

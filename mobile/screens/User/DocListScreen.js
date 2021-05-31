@@ -26,7 +26,7 @@ export default class DocList extends React.Component {
 
   fetchData() {
     this.setState({loading: true});
-    fetch('http://10.0.2.2:3000/getCounselorData/confirmed')
+    fetch('http://10.0.2.2:3001/getCounselorData/confirmed')
       .then((res) => res.json())
       .then((resJson) => {
         this.setState({ arrayData: resJson });

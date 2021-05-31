@@ -34,7 +34,7 @@ const UserMng = () => {
   const handleDelete = (e) => {
     const id = e.target.value;
     deleteUser(id);
-    loadUsers();
+    window.location.reload();
   };
 
   return (

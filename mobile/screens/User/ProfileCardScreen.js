@@ -52,7 +52,7 @@ const ProfileCardScreen = (props) => {
             console.log('Consoler type is ' + props.route.params.type);
 
             if (props.route.params.type === 'counsoler') {
-              fetch('http://10.0.2.2:3000/getallusers_videoid')
+              fetch('http://10.0.2.2:3001/getallusers_videoid')
                 .then((res) => res.json())
                 .then((resJson) => {
                   console.log(

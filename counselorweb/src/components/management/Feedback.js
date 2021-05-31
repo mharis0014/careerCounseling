@@ -4,19 +4,19 @@ import { Link } from "react-router-dom";
 
 const Feedback = () => {
   const [arrayData, setArrData] = useState([]);
-    const [bgColor, setBgColor] = useState([
-      "#3fc495",
-      "#3664d4",
-      "#f6c90e",
-      "red",
-    ]);
+  const [bgColor, setBgColor] = useState([
+    "#3fc495",
+    "#3664d4",
+    "#f6c90e",
+    "red",
+  ]);
 
   useEffect(() => {
     loadFeedbacks();
   }, []);
 
   async function loadFeedbacks() {
-    const cData = localStorage.getItem("item");
+    const cData = localStorage.getItem("citem");
     const afterParse = JSON.parse(cData);
     const counselorId = afterParse.counselorId;
     try {
@@ -24,10 +24,9 @@ const Feedback = () => {
         "http://localhost:3001/getSpecificCounselorFeedback/" + counselorId
       );
       const data = await response.json();
-      for (let i = 0; i < data.length; i++) {
-        const element = data[i].ratingAndFeedback;
-        setArrData(...arrayData, element);
-      }
+      const feedbacksArr = data.ratingAndFeedback;
+      setArrData(feedbacksArr);
+      console.log(feedbacksArr);
     } catch (e) {
       console.log(e);
     }
@@ -36,7 +35,7 @@ const Feedback = () => {
   return (
     <main>
       <div className="main__container">
-            <div
+        <div
           style={{
             display: "flex",
             flexDirection: "row",

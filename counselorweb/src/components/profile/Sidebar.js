@@ -63,10 +63,13 @@ const Sidebar = () => {
             counselorId: data[0],
             token: data[1],
           };
-          localStorage.setItem("item", JSON.stringify(items));
-          data[1] === "undefined"
-            ? history.push("/")
-            : history.push("/dashboard");
+          if (data[1] === undefined) {
+            history.push("/");
+          } else {
+            localStorage.setItem("citem", JSON.stringify(items));
+            history.push("/dashboard");
+            window.location.reload();
+          }
         } catch (e) {
           console.log(e);
         }
@@ -98,9 +101,12 @@ const Sidebar = () => {
             counselorId: data[0],
             token: data[1],
           });
-          localStorage.getItem("item") === "undefined"
-            ? console.log("Signup Failed")
-            : history.push("/dashboard");
+          if (data === undefined) {
+            history.push("/login");
+          } else {
+            setToggle(!toggle);
+            window.location.reload();
+          }
         } catch (e) {
           console.log(e);
         }
@@ -155,7 +161,7 @@ const Sidebar = () => {
           type="password"
           placeholder="Password"
         />
-        <button>Sign Up</button>
+        <button>Sign In</button>
       </Form>
       <div>
         <Terms>

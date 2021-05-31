@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import Stripe from "./Stripe";
@@ -13,7 +13,6 @@ const PaymentOptions = () => {
 
   return (
     <div
-      onClick={() => console.log(location.data)}
       style={{
         display: "flex",
         width: "100%",
@@ -21,9 +20,7 @@ const PaymentOptions = () => {
         flexDirection: "row",
       }}
     >
-      <Easypaisa
-        data={location.data}
-      />
+      <Easypaisa data={location.data} />
       <div style={{ backgroundColor: "#f7f7f7", width: "50%" }}>
         <div
           style={{
@@ -42,7 +39,7 @@ const PaymentOptions = () => {
         </div>
         <div style={{ padding: 100 }}>
           <Elements stripe={stripePromise}>
-            <Stripe />
+            <Stripe data={location.data} />
           </Elements>
         </div>
       </div>

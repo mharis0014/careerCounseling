@@ -8,9 +8,11 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
-  ToastAndroid
+  ToastAndroid,
+  Alert
 } from 'react-native';
-import {useDispatch} from 'react-redux';
+import { useDispatch } from 'react-redux';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const LoginScreen = (props) => {
   const dispatch = useDispatch();
@@ -18,7 +20,7 @@ const LoginScreen = (props) => {
   const [password, setPassword] = useState('');
 
   const counselorCred = async (props) => {
-    fetch('http://10.0.2.2:3000/counselorSignin', {
+    fetch('http://10.0.2.2:3001/counselorSignin', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -31,12 +33,18 @@ const LoginScreen = (props) => {
       .then((res) => res.json())
       .then(async (data) => {
         try {
-          //  await AsyncStorage.setItem('token', data.token);
+          console.log({ data: data });
+          console.log('counselor in logging in')
+          await AsyncStorage.setItem('token', data[1]);
           console.log('counselor is logged in');
           dispatch({type: 'server/join', data: 'c_' + email}); //Without Check else will not work
           global.curr_user = email;
-          props.navigation.replace('Counselor Home Screen');
-          ToastAndroid.show('Logged in successfully !', ToastAndroid.SHORT);
+          if (data[1] !== undefined) {
+            props.navigation.replace('Counselor Home Screen');
+            ToastAndroid.show('Logged in successfully !', ToastAndroid.SHORT);
+          } else {
+            Alert.alert('Login Failed', 'Enter valid credentials');
+          }
         } catch (e) {
           console.log(e);
         }

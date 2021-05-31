@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../adminStyles/AdminStyles.css";
 import { Link } from "react-router-dom";
-import Avatar from "../../assets/avatar.svg";
 
 const Payments = () => {
   const [arrayData, setArrData] = useState([]);
@@ -17,6 +16,7 @@ const Payments = () => {
       );
       const data = await response.json();
       setArrData(data);
+      console.log(data);
     } catch (e) {
       console.log(e);
     }
@@ -59,7 +59,7 @@ const Payments = () => {
                 <td>
                   <div>
                     <p>{user.userName}</p>
-                    <p style={{ color: "#888" }}>#{user.id}</p>
+                    <p style={{ color: "#888" }}>#{user.userId}</p>
                     <p
                       style={{
                         fontStyle: "italic",
@@ -81,7 +81,7 @@ const Payments = () => {
                     />
                     <div>
                       <p>{user.counselorName}</p>
-                      <p style={{ color: "#888" }}>#{user.id}</p>
+                      <p style={{ color: "#888" }}>#{user.counselorId}</p>
                       <p
                         style={{
                           fontStyle: "italic",

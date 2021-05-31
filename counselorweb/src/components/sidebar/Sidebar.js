@@ -2,24 +2,27 @@ import React, { useState, useEffect } from "react";
 import "./Sidebar.css";
 
 const Sidebar = ({ sidebarOpen, closeSidebar }) => {
-  const [counselorData, setCounselorData] = useState([]);
+  const [counselorData, setCounselorData] = useState("");
   const [isloading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadCounselors();
+    localStorage.getItem("citem") && loadCounselors();
   }, []);
 
   async function loadCounselors() {
-    const cData = localStorage.getItem("item");
+    console.log("----------1----------");
+    const cData = localStorage.getItem("citem");
     const afterParse = JSON.parse(cData);
     const counselorId = afterParse.counselorId;
 
     try {
+      console.log("------------2----------");
       const response = await fetch(
         "http://localhost:3001/getCounselorData/" + counselorId
       );
       const data = await response.json();
       console.log(data);
+      console.log("------------3----------");
       setCounselorData(data);
       setLoading(false);
     } catch (e) {
@@ -44,21 +47,19 @@ const Sidebar = ({ sidebarOpen, closeSidebar }) => {
   ) : (
     <div className={sidebarOpen ? "sidebar_responsive" : ""} id="sidebar">
       <div className="sidebar__title">
-        {counselorData.map((counselor, index) => (
-          <div key={index} className="sidebar__img">
-            <img
-              style={{
-                borderRadius: 50,
-                height: 50,
-                width: 50,
-                marginRight: 20,
-              }}
-              src={`data:image/jpeg;base64,${counselor.counselorImage}`}
-              alt="logo"
-            />
-            <h1>{counselor.name}</h1>
-          </div>
-        ))}
+        <div className="sidebar__img">
+          <img
+            style={{
+              borderRadius: 50,
+              height: 50,
+              width: 50,
+              marginRight: 20,
+            }}
+            src={`data:image/jpeg;base64,${counselorData.counselorImage}`}
+            alt="logo"
+          />
+          <h1 style={{ color: "#fff" }}>{counselorData.name}</h1>
+        </div>
         <i
           onClick={() => closeSidebar()}
           className="fa fa-times"
@@ -79,7 +80,7 @@ const Sidebar = ({ sidebarOpen, closeSidebar }) => {
         </div>
         <div className="sidebar__link">
           <i className="fa fa-user-o"></i>
-          <a href="/userMng">My Clients</a>
+          <a href="/clients">My Clients</a>
         </div>
         <div className="sidebar__link">
           <i className="fa fa-credit-card"></i>

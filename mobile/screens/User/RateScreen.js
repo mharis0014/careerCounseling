@@ -21,7 +21,7 @@ const RateScreen = (props) => {
   const confirmRating = async (props) => {
     try {
       const response = await fetch(
-        'http://10.0.2.2:3000/ratings/' + counselorId,
+        'http://10.0.2.2:3001/ratings/' + counselorId,
         {
           Accept: 'application/json',
           method: 'PUT',

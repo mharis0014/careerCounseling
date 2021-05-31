@@ -38,6 +38,20 @@ export default class QuizScreen extends Component {
                   style={{color: 'white', fontWeight: 'bold', fontSize: 30}}>
                   Welcome to AI Career Test
                 </Text>
+                <Text
+                  style={{
+                    color: 'white',
+                    marginTop: 20,
+                    padding: 10,
+                  }}>
+                  <Text
+                    style={{fontWeight: 'bold', color: 'red', fontSize: 18}}>
+                    Instructions:
+                  </Text>
+                  Answer all 50 questions as they relate to you in a fulfilling
+                  environment. There are no wrong answers. If you are undecided,
+                  choose the answer that describes you more often
+                </Text>
                 <Text style={{color: 'yellow'}}>Click Start to continue</Text>
               </ImageBackground>
             </View>

@@ -18,7 +18,7 @@ const HomeScreen = (props) => {
 
   const boiler = async () => {
     const token = await AsyncStorage.getItem('token');
-    fetch('http://10.0.2.2:3000/', {
+    fetch('http://10.0.2.2:3001/', {
       headers: new Headers({
         Authorization: 'Bearer ' + token,
       }),

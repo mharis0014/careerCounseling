@@ -39,7 +39,7 @@ const CounselorMng = () => {
   const handleDelete = (e) => {
     const id = e.target.value;
     deleteCounselor(id);
-    loadCounselors();
+    window.location.reload();
   };
 
   return (

@@ -29,7 +29,7 @@ const EasypaisaQR = (props) => {
   }, []);
 
   const sendCred = async (props) => {
-    fetch('http://10.0.2.2:3000/appointment', {
+    fetch('http://10.0.2.2:3001/appointment', {
       Accept: 'application/json',
       method: 'POST',
       headers: {
@@ -64,6 +64,8 @@ const EasypaisaQR = (props) => {
   const getUserData = async () => {
     const afterParse = JSON.parse(await AsyncStorage.getItem('item'));
     setUserid(afterParse.userId);
+    console.log(afterParse);
+    console.log(afterParse.userId);
     setUsername(afterParse.userName);
     setUseremail(afterParse.userEmail);
   };

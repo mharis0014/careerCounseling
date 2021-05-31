@@ -109,7 +109,7 @@ const CounselorStack = () => {
 };
 
 const Navigation = (props) => {
-  const socket = io('http://192.168.43.203:3000');
+  const socket = io('http://192.168.100.7:3001');
   const socketIoMiddleware = createSocketIoMiddleware(socket, 'server/');
 
   function reducer(state = {conversations: {}}, action) {

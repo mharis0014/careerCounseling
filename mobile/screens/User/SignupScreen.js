@@ -72,7 +72,7 @@ const SignupScreen = (props) => {
   };
 
   const sendCred = async (props) => {
-    fetch('http://10.0.2.2:3000/userSignup', {
+    fetch('http://10.0.2.2:3001/userSignup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

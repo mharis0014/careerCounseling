@@ -4,6 +4,12 @@ import { Link } from "react-router-dom";
 
 const CounselorReq = () => {
   const [arrayData, setArrData] = useState([]);
+  const [bgColor, setBgColor] = useState([
+    "#3fc495",
+    "#3664d4",
+    "#f6c90e",
+    "red",
+  ]);
 
   useEffect(() => {
     loadUsers();
@@ -11,7 +17,9 @@ const CounselorReq = () => {
 
   async function loadUsers() {
     try {
-      const response = await fetch("http://localhost:3001/getCounselorData/requested");
+      const response = await fetch(
+        "http://localhost:3001/getCounselorData/requested"
+      );
       const data = await response.json();
       setArrData(data);
 
@@ -24,22 +32,13 @@ const CounselorReq = () => {
   const confirmCounselor = async (id) => {
     try {
       const response = await fetch(
-        "http://localhost:3001/updateCounselor" + id,
+        "http://localhost:3001/updateCounselor/" + id,
         {
-          method: "POST",
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            fileList: {
-              contentType: "image/png",
-              data: arrayData.imageData,
-            },
-            name: arrayData.name,
-            email: arrayData.email,
-            password: arrayData.password,
-            education: arrayData.education,
-            about: arrayData.about,
             status: "confirmed",
           }),
         }
@@ -54,7 +53,7 @@ const CounselorReq = () => {
   const handleClick = (e) => {
     const id = e.target.value;
     confirmCounselor(id);
-    loadUsers();
+    window.location.reload();
   };
 
   return (
@@ -94,7 +93,7 @@ const CounselorReq = () => {
           </thead>
           <tbody>
             {arrayData.map((counselor, index) => (
-              <tr>
+              <tr key={index}>
                 <th scope="row">{index + 1}</th>
                 <td>
                   <img
@@ -107,11 +106,7 @@ const CounselorReq = () => {
                 <td>{counselor.name}</td>
                 <td>{counselor.email}</td>
                 <td>{counselor.education}</td>
-                <td>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s.
-                </td>
+                <td>{counselor.about}</td>
                 <td>3 Years</td>
                 <td>
                   <Link
@@ -124,13 +119,23 @@ const CounselorReq = () => {
                     style={{
                       textDecoration: "none",
                       backgroundColor: "#20e354",
+                      borderColor: "#20e354",
                     }}
                     class="btn btn-primary mr-2"
                   >
-                    <button value={counselor.id} onClick={handleClick}>
+                    <i className="fa fa-check" aria-hidden="true"></i>
+                    <button
+                      style={{
+                        backgroundColor: "transparent",
+                        border: 0,
+                        color: "#20e354",
+                        fontSize: 1,
+                      }}
+                      value={counselor.id}
+                      onClick={handleClick}
+                    >
                       Confirm
                     </button>
-                    {/* <i className="fa fa-check" aria-hidden="true"></i> */}
                   </Link>
                   <Link
                     style={{ textDecoration: "none" }}

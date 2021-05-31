@@ -16,7 +16,6 @@ const PaymentReq = (props) => {
       );
       const data = await response.json();
       setArrData(data);
-
       console.log(data[0]);
     } catch (e) {
       console.log(e);
@@ -26,22 +25,13 @@ const PaymentReq = (props) => {
   const confirmAppointment = async (id) => {
     try {
       const response = await fetch(
-        "http://localhost:3001/updateAppointment"+id,
+        "http://localhost:3001/updateAppointment/" + id,
         {
-          method: "POST",
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            userID: arrayData.userId,
-            userName: arrayData.userName,
-            userEmail: arrayData.userEmail,
-            counselorEmail: arrayData.counselorEmail,
-            counselorName: arrayData.counselorName,
-            counselorId: arrayData.counselorId,
-            counselorImg: arrayData.counselorImage,
-            date: arrayData.date,
-            pakage: arrayData.pakage,
             status: "confirmed",
           }),
         }
@@ -57,7 +47,7 @@ const PaymentReq = (props) => {
     const id = e.target.value;
     console.log(id);
     confirmAppointment(id);
-    loadAppointments();
+    window.location.reload();
   };
 
   return (
@@ -89,7 +79,7 @@ const PaymentReq = (props) => {
               <th style={{ paddingRight: 80 }} scope="col">
                 Status
               </th>
-              <th style={{ paddingRight: 150 }}>Action</th>
+              <th style={{ paddingRight: 180 }}>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -135,7 +125,7 @@ const PaymentReq = (props) => {
                     </div>
                   </div>
                 </td>
-                <td>$160</td>
+                <td>{user.price}</td>
                 <td>
                   <div>
                     <p>{user.date.slice(0, 10)}</p>
@@ -161,11 +151,22 @@ const PaymentReq = (props) => {
                     style={{
                       textDecoration: "none",
                       backgroundColor: "#20e354",
+                      borderColor: "#20e354",
                     }}
                     class="btn btn-primary mr-2"
                   >
-                    {/* <i className="fa fa-check" aria-hidden="true"></i> */}
-                    <button value={user.appointmentId} onClick={handleConfirm}>
+                    <i className="fa fa-check" aria-hidden="true"></i>
+                    <button
+                      style={{
+                        paddingLeft: 5,
+                        border: 0,
+                        backgroundColor: '#20e354',
+                        color: "#fff",
+                        fontSize: 16,
+                      }}
+                      value={user.appointmentId}
+                      onClick={handleConfirm}
+                    >
                       Confirm
                     </button>
                   </Link>

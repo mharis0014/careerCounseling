@@ -4,9 +4,10 @@ import styled from "styled-components";
 const Main = () => {
   return (
     <Container>
-      <h1>
-        Career & <br />
-        Life Partner
+      <h1
+        style={{ marginLeft: "650px", marginBottom: "600px", fontSize: "50px" }}
+      >
+        <span style={{color: 'red'}}>Career</span> Finder
       </h1>
     </Container>
   );
